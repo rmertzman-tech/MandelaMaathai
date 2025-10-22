@@ -1,376 +1,2098 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Architecture of Ethical Reasoning</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- 
-    Chosen Palette: Professional Indigo & Slate
-    Application Structure Plan: A thematic SPA divided into five core sections that mirror the essay's logical flow but are presented for interactive exploration. 1) Introduction with a "Gaming Discovery" hook. 2) A section detailing the Personal Reality Framework (PRF). 3) A deep dive into the "Three Universal Coordination Principles." 4) An interactive "Ethical Logic Toolkit" where users can explore ATL, STIT, and Coalition Logic. 5) A capstone "Ethical Cartography" simulation where users apply the entire framework to the AI Ethics case study. This structure guides the user from the foundational discovery to practical application, making the framework a usable tool rather than just a theoretical text.
-    Visualization & Content Choices: Report Info: Gaming Discovery Data -> Goal: Show evidence -> Viz: Bar Chart -> Interaction: Hover to see data points. -> Justification: The bar chart makes the performance advantages of diverse teams immediately apparent and impactful. -> Library: Chart.js. Report Info: PRF Components -> Goal: Explain -> Viz: Clickable cards -> Interaction: Click reveals details of each component (B, R, O, A+, C) and the UEV. Report Info: ATCF Components -> Goal: Explain measurement -> Viz: Doughnut Chart -> Interaction: Hover for component descriptions -> Justification: A doughnut chart is a good way to show a whole composed of parts (the ATCF score). -> Library: Chart.js. Report Info: Logical Tools -> Goal: Explain -> Viz: Tabbed interface for ATL, STIT, Coalition Logic -> Interaction: User clicks tabs to switch between explanations of the logical tools. Report Info: AI Ethics Case Study -> Goal: Simulate -> Viz: Step-by-step interactive workflow -> Interaction: User clicks through the 6 steps of the Ethical Cartography process, seeing how each tool is applied to generate a robust solution. This makes the abstract process concrete and actionable.
-    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
-    -->
+    <title>The Examined Life: ABCD Capability Development</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f1f5f9; /* slate-100 */
-            color: #334155; /* slate-700 */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
         }
-        .section-title {
-            color: #4338ca; /* indigo-700 */
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .interactive-card {
-            transition: all 0.3s ease-in-out;
-            border: 1px solid #cbd5e1; /* slate-300 */
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
-        .interactive-card:hover, .interactive-card.active {
+
+        h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+        }
+
+        nav {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn.active {
+            background: #764ba2;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .content-section {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        h4 {
+            color: #667eea;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        h5 {
+            color: #764ba2;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        h6 {
+            color: #667eea;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            font-size: 1em;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .abcd-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .abcd-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .abcd-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            border-color: #4f46e5; /* indigo-600 */
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
         }
-        .chart-container {
-            position: relative;
-            height: 300px;
+
+        .abcd-card h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #667eea;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
             width: 100%;
-            max-width: 600px;
-            margin: auto;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            font-family: inherit;
+            transition: border-color 0.3s ease;
         }
-        .tab-btn.active {
-            background-color: #4f46e5;
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .result-box {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border-left: 4px solid #667eea;
+            display: none;
+        }
+
+        .result-box.visible {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .progress-tracker {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .case-study {
+            background: #fff;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .case-study-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .case-study-header h3 {
+            color: white;
+            margin-top: 0;
+        }
+
+        .case-study-header p {
+            margin-bottom: 5px;
+        }
+
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            padding: 20px;
+            border-left: 3px solid #667eea;
+            margin-left: 20px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .timeline-item::before {
+            content: '';
+            width: 15px;
+            height: 15px;
+            background: #667eea;
+            border-radius: 50%;
+            position: absolute;
+            left: -9px;
+            top: 20px;
+        }
+
+        .checklist {
+            list-style: none;
+            padding: 0;
+        }
+
+        .checklist li {
+            padding: 12px;
+            margin: 8px 0;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .checklist li:hover {
+            background: #e9ecef;
+        }
+
+        .checklist li::before {
+            content: '☐';
+            position: absolute;
+            left: 12px;
+            font-size: 1.5em;
+            color: #667eea;
+        }
+
+        .checklist li.checked::before {
+            content: '☑';
+        }
+
+        .checklist li.checked {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .network-viz {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .network-node {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.9em;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .network-node:hover {
+            background: #667eea;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .tip-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .tip-box::before {
+            content: '💡 ';
+            font-size: 1.2em;
+        }
+
+        .quote-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 4px;
+            font-style: italic;
+        }
+
+        .action-button {
+            background: #28a745;
+            margin: 5px;
+        }
+
+        .action-button:hover {
+            background: #218838;
+        }
+
+        .warning-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .tab.active {
+            background: #667eea;
             color: white;
         }
-        .step-item.active .step-circle {
-            background-color: #4f46e5;
-            color: white;
-            border-color: #4f46e5;
+
+        .tab-content {
+            display: none;
         }
-         .step-item.active .step-title {
-            color: #4338ca;
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .abcd-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                flex-direction: column;
+            }
+
+            .nav-btn {
+                width: 100%;
+            }
+
+            .network-node {
+                width: 100px;
+                height: 100px;
+                font-size: 0.8em;
+            }
         }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-700">
+<body>
+    <div class="container">
+        <header>
+            <h1>The Examined Life</h1>
+            <p class="subtitle">Interactive Guide to ABCD Capability Development</p>
+        </header>
 
-    <header class="bg-white shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-indigo-700">Ethical Architecture</h1>
-            <div class="hidden md:flex space-x-6 text-sm">
-                <a href="#foundation" class="text-slate-600 hover:text-indigo-600 transition">Foundation</a>
-                <a href="#principles" class="text-slate-600 hover:text-indigo-600 transition">Principles</a>
-                <a href="#language" class="text-slate-600 hover:text-indigo-600 transition">Language</a>
-                <a href="#toolkit" class="text-slate-600 hover:text-indigo-600 transition">Toolkit</a>
-                <a href="#cartography" class="text-slate-600 hover:text-indigo-600 transition">Cartography</a>
-            </div>
+        <nav>
+            <button class="nav-btn active" onclick="showSection('home')">Home</button>
+            <button class="nav-btn" onclick="showSection('abcd-intro')">ABCD Framework</button>
+            <button class="nav-btn" onclick="showSection('weekly-review')">Weekly Review</button>
+            <button class="nav-btn" onclick="showSection('capability-inventory')">Capability Inventory</button>
+            <button class="nav-btn" onclick="showSection('case-studies')">Case Studies</button>
+            <button class="nav-btn" onclick="showSection('network-builder')">Network Builder</button>
+            <button class="nav-btn" onclick="showSection('resources')">Resources</button>
         </nav>
-    </header>
 
-    <main class="container mx-auto px-6 py-12">
+        <!-- HOME SECTION -->
+        <div id="home" class="content-section active">
+            <h2>Welcome to The Examined Life</h2>
+            <p style="font-size: 1.1em; line-height: 1.8;">This interactive application helps you practice examining your life through the ABCD framework: <strong>Agency, Beauty/Awe, Context, and Dynamics</strong>.</p>
 
-        <section id="intro" class="text-center mb-24">
-            <h2 class="text-4xl md:text-5xl font-bold mb-4">The Architecture of Ethical Reasoning</h2>
-            <p class="max-w-3xl mx-auto text-lg text-slate-600">
-                This is a unified framework for applied ethics, moving from abstract theory to a practical science of coordination. It provides worldview-agnostic tools to navigate complex moral decisions and design effective ethical systems.
-            </p>
-        </section>
-
-        <section id="foundation" class="mb-24 pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part I: The Foundation</h3>
-            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                A key discovery from over 4,000 international gaming sessions grounds this framework: culturally diverse teams consistently outperform homogeneous ones when they focus on coordination capabilities rather than shared beliefs.
-            </p>
-            <div class="bg-white p-8 rounded-xl shadow-lg">
-                <h4 class="text-xl font-bold text-center mb-4">Performance Advantage of Diverse Teams</h4>
-                <div class="chart-container">
-                    <canvas id="performanceChart"></canvas>
+            <div class="abcd-grid">
+                <div class="abcd-card" onclick="showSection('abcd-intro')">
+                    <h3>🎯 Agency (A)</h3>
+                    <p>What can you actually do? Understand your real capacity for action given your capabilities and constraints.</p>
+                </div>
+                <div class="abcd-card" onclick="showSection('abcd-intro')">
+                    <h3>✨ Beauty/Awe (B)</h3>
+                    <p>What sustains your motivation? Build infrastructure for experiences that renew commitment to long-term goals.</p>
+                </div>
+                <div class="abcd-card" onclick="showSection('abcd-intro')">
+                    <h3>🌍 Context (C)</h3>
+                    <p>What situation are you in? Read the systems and structures shaping your possibilities and constraints.</p>
+                </div>
+                <div class="abcd-card" onclick="showSection('abcd-intro')">
+                    <h3>🔄 Dynamics (D)</h3>
+                    <p>How are things changing? Navigate transformation, recognize patterns, and understand feedback loops.</p>
                 </div>
             </div>
-            <div class="mt-12">
-                 <h4 class="text-2xl font-bold text-center mb-6">Your Ethical Mind as Living Architecture: The PRF</h4>
-                 <div class="grid md:grid-cols-3 gap-6">
-                    <div class="col-span-3 md:col-span-1 space-y-4">
-                         <div id="prf-card-b" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>B:</strong> Belief System</div>
-                         <div id="prf-card-r" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>R:</strong> Rule System</div>
-                         <div id="prf-card-o" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>O:</strong> Ontological System</div>
-                         <div id="prf-card-a" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>A+:</strong> Authenticity System</div>
-                         <div id="prf-card-c" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>C:</strong> Coordination Capabilities</div>
-                         <div id="prf-card-uev" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>UEV:</strong> Unified Experience Vector</div>
-                    </div>
-                    <div id="prf-detail-view" class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
-                        <h5 id="prf-detail-title" class="font-bold text-xl mb-2 text-indigo-700">Click a component to learn more</h5>
-                        <p id="prf-detail-text" class="text-slate-600">Your moral reasoning operates through an integrated, measurable system. This Personal Reality Framework (PRF) is the living architecture of your ethical mind.</p>
-                    </div>
-                 </div>
+
+            <div class="tip-box">
+                <strong>Start Here:</strong> Begin with the ABCD Framework to understand the core concepts, then try the Weekly Review to assess your current state.
             </div>
-        </section>
 
-        <section id="principles" class="mb-24 pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">The Three Universal Coordination Principles</h3>
-            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                Cross-cultural research reveals that all effective ethical coordination, regardless of the specific moral tradition, relies on three organizational principles.
-            </p>
-            <div class="grid md:grid-cols-3 gap-8">
-                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl mb-4">1</div>
-                    <h4 class="font-bold text-xl mb-2">Capability-Based Connection</h4>
-                    <p class="text-slate-600">Coordination emerges from recognizing others' ethical capabilities, not from demanding shared beliefs. A utilitarian and a deontologist can work together by respecting each other's analytical strengths.</p>
-                </div>
-                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl mb-4">2</div>
-                    <h4 class="font-bold text-xl mb-2">Temporal Coherence</h4>
-                    <p class="text-slate-600">Ethical decisions must integrate past wisdom, present reality, and future consequences. This ability to maintain coherence across time is a measurable predictor of ethical capability.</p>
-                </div>
-                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
-                    <div class="text-4xl mb-4">3</div>
-                    <h4 class="font-bold text-xl mb-2">Cross-Scale Organization</h4>
-                    <p class="text-slate-600">The same architectural principles that enable individual moral agency also enable effective family, institutional, and societal ethics. Ethical systems are fractal.</p>
-                </div>
-            </div>
-        </section>
+            <h3>Quick Start Guide</h3>
+            <ol style="line-height: 2;">
+                <li><strong>Learn the Framework:</strong> Explore the ABCD dimensions</li>
+                <li><strong>Assess Yourself:</strong> Complete the Capability Inventory</li>
+                <li><strong>Weekly Practice:</strong> Use the Weekly Review protocol</li>
+                <li><strong>Learn from History:</strong> Study the Case Studies</li>
+                <li><strong>Build Your Network:</strong> Identify complementary capabilities</li>
+            </ol>
+        </div>
 
-        <section id="language" class="mb-24 pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part II: The Language of Capability</h3>
-            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                This framework revolutionizes how we understand ethical statements. Instead of asking what a statement like "We should help the poor" *means* as a universal truth, we ask what *capabilities* an agent needs to work with it effectively.
-            </p>
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                <h4 class="text-xl font-bold text-center">Capability Specification for: "We Should Help the Poor"</h4>
-                <p class="text-center text-sm text-slate-500 mb-8">Effective use of this statement requires four distinct capabilities:</p>
-                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-                    <div>
-                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">R</div>
-                        <h5 class="font-semibold mt-4">Recognition</h5>
-                        <p class="text-sm text-slate-500">Ability to identify poverty's impacts.</p>
-                    </div>
-                    <div>
-                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">R</div>
-                        <h5 class="font-semibold mt-4">Response</h5>
-                        <p class="text-sm text-slate-500">Procedural knowledge for anti-poverty actions.</p>
-                    </div>
-                    <div>
-                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">C</div>
-                        <h5 class="font-semibold mt-4">Coordination</h5>
-                        <p class="text-sm text-slate-500">Skills to work with others on complementary actions.</p>
-                    </div>
-                    <div>
-                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">A</div>
-                        <h5 class="font-semibold mt-4">Assessment</h5>
-                        <p class="text-sm text-slate-500">Meta-capacity to evaluate and improve strategies.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="toolkit" class="mb-24 pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part III: The Measurement Toolkit</h3>
-             <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                This framework integrates formal logic as a practical toolkit for ethical reasoning. Explore the different tools and their applications below.
-            </p>
-            <div class="bg-white rounded-xl shadow-lg">
-                <div class="flex border-b border-slate-200">
-                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition active" data-tab="atl">ATL</button>
-                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="stit">STIT</button>
-                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="coalition">Coalition Logic</button>
-                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="atcf">ATCF</button>
-                </div>
-                <div class="p-8">
-                    <div id="tab-content-atl" class="tab-content">
-                        <h4 class="text-xl font-bold">Alternating-Time Temporal Logic (ATL)</h4>
-                        <p class="text-sm text-slate-500 mb-4">For Strategic Ethical Analysis</p>
-                        <p>ATL shifts the question from "Is this action right?" to "Do we have a strategy to ensure an ethical outcome?" It transforms abstract moral debate into practical analysis of capabilities and coordination.</p>
-                        <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> "Does our society have coalition strategies to guarantee universal healthcare access, regardless of political opposition or economic shifts?"</p>
-                    </div>
-                    <div id="tab-content-stit" class="tab-content hidden">
-                        <h4 class="text-xl font-bold">"Seeing To It That" Logic (STIT)</h4>
-                        <p class="text-sm text-slate-500 mb-4">For Personal Moral Agency</p>
-                        <p>STIT formalizes individual responsibility. It distinguishes between hoping for an outcome and having the actual capability to ethically ensure it happens. This prevents making commitments based on good intentions alone.</p>
-                         <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> It helps differentiate "I hope I'll be a good parent" (a wish) from "I have the skills and resources to ensure my child receives needed care" (a commitment based on capability).</p>
-                    </div>
-                    <div id="tab-content-coalition" class="tab-content hidden">
-                        <h4 class="text-xl font-bold">Coalition Logic</h4>
-                         <p class="text-sm text-slate-500 mb-4">For Distributed Ethical Responsibility</p>
-                        <p>This tool is for problems no single person can solve. It models how groups can coordinate their capabilities to achieve ethical outcomes that are beyond any individual's power.</p>
-                        <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> "What combination of roles (HR, leadership, staff) and capabilities is needed to eliminate hiring bias, and how must they coordinate to succeed?"</p>
-                    </div>
-                    <div id="tab-content-atcf" class="tab-content hidden grid md:grid-cols-2 gap-6 items-center">
-                        <div>
-                            <h4 class="text-xl font-bold">Adaptive Temporal Coherence Function (ATCF)</h4>
-                            <p class="text-sm text-slate-500 mb-4">For Mathematical Ethics Across Time</p>
-                            <p>The ATCF is a measurable assessment of an agent's ability to maintain a coherent ethical identity over time. High scores predict superior ethical decision-making. It has four key components.</p>
-                        </div>
-                        <div class="chart-container" style="height: 250px;">
-                             <canvas id="atcfChart"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="cartography" class="pt-8">
-            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part IV: Applied Integration - Ethical Cartography</h3>
-            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
-                Ethical Cartography is the unified process in action. It's about mapping a moral territory and designing navigation routes, not just arguing about destinations. Let's apply it to the challenge of developing AI Ethics Guidelines.
-            </p>
-            <div class="bg-white rounded-xl shadow-lg p-8">
-                 <div class="flex flex-col md:flex-row gap-8">
-                    <div class="w-full md:w-1/3 space-y-2">
-                        <div id="step-1" class="step-item interactive-card p-3 rounded-lg cursor-pointer active">
-                            <h5 class="step-title font-semibold">1. Cross-Scale Analysis</h5>
-                        </div>
-                        <div id="step-2" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
-                            <h5 class="step-title font-semibold">2. PRF Proposition Development</h5>
-                        </div>
-                        <div id="step-3" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
-                             <h5 class="step-title font-semibold">3. Strategic Analysis (ATL)</h5>
-                        </div>
-                        <div id="step-4" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
-                             <h5 class="step-title font-semibold">4. Agency Assessment (STIT)</h5>
-                        </div>
-                         <div id="step-5" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
-                             <h5 class="step-title font-semibold">5. Temporal Check (ATCF)</h5>
-                        </div>
-                         <div id="step-6" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
-                             <h5 class="step-title font-semibold">6. Game-Theoretic Validation</h5>
-                        </div>
-                    </div>
-                    <div class="w-full md:w-2/3 bg-slate-50 p-6 rounded-lg">
-                        <h4 id="step-detail-title" class="font-bold text-xl mb-2 text-indigo-700"></h4>
-                        <p id="step-detail-text" class="text-slate-600"></p>
-                    </div>
-                 </div>
-            </div>
-        </section>
-
-    </main>
-    <footer class="text-center py-8 text-sm text-slate-500">
-        <p>The Architecture of Ethical Reasoning: A Unified Framework. FAIM-QIRF.</p>
-        <a href="https://rmertzman-tech.github.io/capability-coordination-framework/index.html" class="hover:text-indigo-600 underline" target="_blank">Technical Repository</a>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Smooth scroll for nav links
-            document.querySelectorAll('header nav a').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-
-            // Performance Chart
-            const perfCtx = document.getElementById('performanceChart').getContext('2d');
-            new Chart(perfCtx, {
-                type: 'bar',
-                data: {
-                    labels: ['Complex Dilemmas', 'Adaptation', 'Innovation', 'Stakeholder Satisfaction'],
-                    datasets: [{
-                        label: '% Superior Performance of Diverse Teams',
-                        data: [23, 40, 35, 52],
-                        backgroundColor: 'rgba(79, 70, 229, 0.6)',
-                        borderColor: 'rgba(79, 70, 229, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    scales: { y: { beginAtZero: true, max: 60, ticks: { callback: value => value + '%' } } },
-                    plugins: { legend: { display: false } }
-                }
-            });
-
-            // PRF Details
-            const prfDetails = {
-                b: { title: 'Belief System (B)', text: "Your probability assessments and confidence levels about moral propositions, with measurable neural correlates in prefrontal regions." },
-                r: { title: 'Rule System (R)', text: "Your procedural knowledge for navigating ethical situations, with weighted decision procedures that activate based on context." },
-                o: { title: 'Ontological System (O)', text: "Your fundamental categories for understanding moral reality—concepts of personhood, responsibility, harm, and justice." },
-                a: { title: 'Authenticity System (A+)', text: "Your standards for evaluating alignment with your core identity, including your Identity Kernel (IK), the invariant structures of your ethical self." },
-                c: { title: 'Coordination Capabilities (C)', text: "Your empirically assessed skills for working with others on ethical challenges, including perspective-taking and conflict resolution." },
-                uev: { title: 'Unified Experience Vector (UEV)', text: "The simultaneous, measurable integration of your Global Feeling Tone, Emotional Motivation Vector, Rational Deliberation Vector, and Action Readiness Vector." }
-            };
-
-            const prfDetailTitle = document.getElementById('prf-detail-title');
-            const prfDetailText = document.getElementById('prf-detail-text');
-            document.querySelectorAll('.interactive-card[id^="prf-card-"]').forEach(card => {
-                card.addEventListener('click', () => {
-                    document.querySelectorAll('.interactive-card[id^="prf-card-"]').forEach(c => c.classList.remove('active'));
-                    card.classList.add('active');
-                    const key = card.id.split('-')[2];
-                    prfDetailTitle.innerText = prfDetails[key].title;
-                    prfDetailText.innerText = prfDetails[key].text;
-                });
-            });
-
-            // Logic Toolkit Tabs
-            const tabBtns = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabBtns.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tab = btn.dataset.tab;
-                    tabBtns.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    tabContents.forEach(content => {
-                        if (content.id === `tab-content-${tab}`) {
-                            content.classList.remove('hidden');
-                        } else {
-                            content.classList.add('hidden');
-                        }
-                    });
-                });
-            });
+        <!-- ABCD FRAMEWORK SECTION -->
+        <div id="abcd-intro" class="content-section">
+            <h2>The ABCD Framework</h2>
             
-            // ATCF Chart
-            const atcfCtx = document.getElementById('atcfChart').getContext('2d');
-            new Chart(atcfCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Historical Continuity (HC)', 'Present Integration (PI)', 'Prospective Coherence (PC)', 'Meta-Constructor Capacity (MCC)'],
-                    datasets: [{
-                        label: 'ATCF Components',
-                        data: [25, 25, 25, 25],
-                        backgroundColor: ['rgba(79, 70, 229, 0.7)', 'rgba(30, 64, 175, 0.7)', 'rgba(129, 140, 248, 0.7)', 'rgba(199, 210, 254, 0.7)'],
-                        borderColor: '#f1f5f9',
-                        borderWidth: 2
-                    }]
-                },
-                options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
-            });
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('agency-tab')">Agency</button>
+                <button class="tab" onclick="showTab('beauty-tab')">Beauty/Awe</button>
+                <button class="tab" onclick="showTab('context-tab')">Context</button>
+                <button class="tab" onclick="showTab('dynamics-tab')">Dynamics</button>
+            </div>
 
-            // Cartography Steps
-            const stepDetails = {
-                '1': { title: '1. Cross-Scale Analysis', text: 'Map the coordination requirements across all levels, from individual developers to international bodies. Identify how actions at one scale impact others.' },
-                '2': { title: '2. PRF Proposition Development', text: 'Instead of abstract principles like "AI should be fair," define the specific capabilities development teams must have in their Belief, Rule, and other PRF systems to detect and mitigate bias.' },
-                '3': { title: '3. Strategic Analysis (ATL)', text: 'Use Alternating-Time Temporal Logic to ask: "Does humanity have coalition strategies to ensure ethical AI development, even with conflicting interests and external pressures?" This moves from hope to strategy.' },
-                '4': { title: '4. Agency Assessment (STIT)', text: 'Use STIT logic to identify which specific agents (e.g., a lead engineer, a safety board) have the actual power to "see to it that" an ethical constraint is implemented, clarifying responsibility.' },
-                '5': { title: '5. Temporal Coherence Check (ATCF)', text: 'Assess whether the proposed guidelines will enhance or fragment the long-term ethical coherence of the stakeholders. Will these rules support authentic development or force inauthentic compliance?' },
-                '6': { title: '6. Game-Theoretic Validation', text: 'Test the proposed guidelines in a simulated "game" against serious challenges (e.g., market competition, national security concerns) to ensure they form a "winning strategy" for ethical AI.' }
-            };
+            <div id="agency-tab" class="tab-content active">
+                <h3>Agency: What Can You Actually Do?</h3>
+                <p>Agency isn't abstract "free will"—it's your real capacity to make a difference given who you are, where you are, and what capabilities you possess.</p>
+                
+                <h4>Key Questions:</h4>
+                <ul style="line-height: 2;">
+                    <li>What are my current capabilities?</li>
+                    <li>What constraints are real vs. perceived?</li>
+                    <li>Where am I overestimating or underestimating my power?</li>
+                    <li>What requires individual vs. collective capability?</li>
+                    <li>What new capabilities do I need to develop?</li>
+                </ul>
 
-            const stepItems = document.querySelectorAll('.step-item');
-            const stepDetailTitle = document.getElementById('step-detail-title');
-            const stepDetailText = document.getElementById('step-detail-text');
+                <h4>Practices to Develop Agency:</h4>
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Systematic self-examination (Cartesian doubt)</li>
+                    <li onclick="toggleCheck(this)">Control discrimination (Stoic practice)</li>
+                    <li onclick="toggleCheck(this)">Material analysis (understanding constraints)</li>
+                    <li onclick="toggleCheck(this)">Pragmatic experimentation (learning by doing)</li>
+                    <li onclick="toggleCheck(this)">Existential responsibility (owning your choices)</li>
+                </ul>
 
-            function updateStepView(step) {
-                 stepItems.forEach(item => item.classList.remove('active'));
-                 document.getElementById(`step-${step}`).classList.add('active');
-                 stepDetailTitle.innerText = stepDetails[step].title;
-                 stepDetailText.innerText = stepDetails[step].text;
+                <div class="tip-box">
+                    <strong>Try This Week:</strong> Identify one area where you've been saying "I can't." Examine whether that's a real constraint or an assumed limit. Design a small experiment to test it.
+                </div>
+            </div>
+
+            <div id="beauty-tab" class="tab-content">
+                <h3>Beauty/Awe: What Sustains Your Motivation?</h3>
+                <p>Beauty and awe aren't decorative—they're essential infrastructure for sustaining long-term commitment when challenges are difficult and outcomes uncertain.</p>
+                
+                <h4>Why Awe Matters:</h4>
+                <ul style="line-height: 2;">
+                    <li>Reduces ego-threat and defensiveness</li>
+                    <li>Connects you to purposes larger than self</li>
+                    <li>Restores perspective when overwhelmed</li>
+                    <li>Provides sustainable motivation across decades</li>
+                    <li>Enables difficult capability development</li>
+                </ul>
+
+                <h4>Daily Awe Practices:</h4>
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Morning: Observe sky before checking phone (2 min)</li>
+                    <li onclick="toggleCheck(this)">Listen to one piece of moving music (5 min)</li>
+                    <li onclick="toggleCheck(this)">Read one poem or passage slowly (5 min)</li>
+                    <li onclick="toggleCheck(this)">Notice beauty in ordinary: light, faces, movement</li>
+                    <li onclick="toggleCheck(this)">Evening: Gratitude for three awe-moments</li>
+                </ul>
+
+                <h4>Weekly Awe Practices:</h4>
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Nature immersion: 1-2 hours in natural setting</li>
+                    <li onclick="toggleCheck(this)">Artistic depth: Concert, museum, sustained reading</li>
+                    <li onclick="toggleCheck(this)">Collective transcendence: Community gathering</li>
+                    <li onclick="toggleCheck(this)">Intellectual beauty: Engage profound ideas</li>
+                </ul>
+
+                <div class="warning-box">
+                    <strong>Awe Deprivation Alert:</strong> If you haven't experienced genuine awe in over a month, your motivational infrastructure is likely degraded. This isn't a luxury problem—it's capability-threatening.
+                </div>
+            </div>
+
+            <div id="context-tab" class="tab-content">
+                <h3>Context: What Situation Are You Embedded In?</h3>
+                <p>Context isn't just your immediate circumstances—it's the multiple nested systems shaping what's possible and what's constrained.</p>
+                
+                <h4>Levels of Context Analysis:</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Personal:</strong> Your immediate relationships, resources, circumstances</li>
+                    <li><strong>Social:</strong> Communities, networks, social norms</li>
+                    <li><strong>Institutional:</strong> Organizations, rules, formal structures</li>
+                    <li><strong>Economic:</strong> Material conditions, class, resource access</li>
+                    <li><strong>Political:</strong> Power structures, governance systems</li>
+                    <li><strong>Cultural:</strong> Language games, value systems, ideologies</li>
+                    <li><strong>Historical:</strong> When you exist in collective development</li>
+                </ul>
+
+                <h4>Context-Reading Capabilities:</h4>
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Multi-level analysis (seeing nested systems)</li>
+                    <li onclick="toggleCheck(this)">Material analysis (understanding economic constraints)</li>
+                    <li onclick="toggleCheck(this)">Power awareness (recognizing subtle domination)</li>
+                    <li onclick="toggleCheck(this)">Language sensitivity (context-dependent meaning)</li>
+                    <li onclick="toggleCheck(this)">Systems interconnection mapping</li>
+                </ul>
+
+                <div class="tip-box">
+                    <strong>Practice:</strong> Take one decision you're facing. Analyze it at all seven context levels. Often what seems like a personal problem reveals itself as systemic when you examine the full context.
+                </div>
+            </div>
+
+            <div id="dynamics-tab" class="tab-content">
+                <h3>Dynamics: How Are Things Changing?</h3>
+                <p>Nothing stays still. Understanding dynamics means recognizing patterns in change, identifying feedback loops, and navigating transformation.</p>
+                
+                <h4>Types of Dynamics:</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Personal:</strong> Your beliefs, capabilities, relationships evolving</li>
+                    <li><strong>Social:</strong> Communities forming, norms shifting</li>
+                    <li><strong>Institutional:</strong> Organizations adapting or collapsing</li>
+                    <li><strong>Systemic:</strong> Large-scale transformations</li>
+                    <li><strong>Historical:</strong> Collective development over generations</li>
+                </ul>
+
+                <h4>Key Dynamics Concepts:</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Feedback Loops:</strong> How actions create consequences that loop back</li>
+                    <li><strong>Tipping Points:</strong> Where small changes cause large shifts</li>
+                    <li><strong>Emergence:</strong> System-level properties from component interactions</li>
+                    <li><strong>Path Dependence:</strong> How history constrains future possibilities</li>
+                    <li><strong>Dialectical Change:</strong> Contradictions driving transformation</li>
+                </ul>
+
+                <h4>Dynamics Navigation Practices:</h4>
+                <ul class="checklist">
+                    <li onclick="toggleCheck(this)">Pattern recognition in flux</li>
+                    <li onclick="toggleCheck(this)">Feedback loop identification</li>
+                    <li onclick="toggleCheck(this)">Experimental adaptation</li>
+                    <li onclick="toggleCheck(this)">Long-term trend tracking</li>
+                    <li onclick="toggleCheck(this)">Temporal awareness (lived vs. clock time)</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- WEEKLY REVIEW SECTION -->
+        <div id="weekly-review" class="content-section">
+            <h2>Weekly ABCD Review Protocol</h2>
+            <p>Use this protocol every Sunday evening (or your equivalent) to maintain the examined life as regular practice.</p>
+
+            <div class="input-group">
+                <label>Week of:</label>
+                <input type="date" id="review-date">
+            </div>
+
+            <h3>Agency Assessment (10 minutes)</h3>
+            <div class="input-group">
+                <label>What did I accomplish this week? (Not intentions—actual actions)</label>
+                <textarea id="agency-accomplished" placeholder="Be specific about what you actually did..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Where did I overestimate my capability? Where did I underestimate it?</label>
+                <textarea id="agency-calibration" placeholder="Identify mismatches between expected and actual capacity..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What constraints were real vs. perceived?</label>
+                <textarea id="agency-constraints" placeholder="Distinguish actual limits from assumed limits..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What capability do I need to develop for next week's challenges?</label>
+                <textarea id="agency-needed" placeholder="Be specific about what you'll practice..."></textarea>
+            </div>
+
+            <h3>Beauty/Awe Infrastructure Check (5 minutes)</h3>
+            <div class="input-group">
+                <label>When did I experience genuine awe this week?</label>
+                <textarea id="awe-experiences" placeholder="Specific moments when ego shrank and perspective expanded..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What sustained my motivation? What drained it?</label>
+                <textarea id="awe-motivation" placeholder="Identify sources of renewal and depletion..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>If no awe experiences: What practice will I do this week to restore connection?</label>
+                <textarea id="awe-practice" placeholder="Commit to specific practice with time blocked..."></textarea>
+            </div>
+
+            <h3>Context Analysis (10 minutes)</h3>
+            <div class="input-group">
+                <label>What systems shaped my week's possibilities and constraints?</label>
+                <textarea id="context-systems" placeholder="Economic, social, institutional, political systems..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What did I take as 'natural' that's actually constructed?</label>
+                <textarea id="context-constructed" placeholder="Recognize normalized assumptions..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Where did power operate invisibly this week?</label>
+                <textarea id="context-power" placeholder="Subtle influences on what seemed possible..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What interconnections mattered that I didn't initially see?</label>
+                <textarea id="context-connections" placeholder="Links between apparently separate issues..."></textarea>
+            </div>
+
+            <h3>Dynamics Navigation (5 minutes)</h3>
+            <div class="input-group">
+                <label>What patterns emerged or continued this week?</label>
+                <textarea id="dynamics-patterns" placeholder="Repeating cycles, trends, trajectories..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What feedback loops did I notice?</label>
+                <textarea id="dynamics-feedback" placeholder="Virtuous or vicious cycles..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Where am I approaching tipping points (positive or negative)?</label>
+                <textarea id="dynamics-tipping" placeholder="Where small changes might cause large shifts..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What needs patience vs. decisive action?</label>
+                <textarea id="dynamics-tempo" placeholder="Identify appropriate timing for different situations..."></textarea>
+            </div>
+
+            <button onclick="saveWeeklyReview()">Save This Week's Review</button>
+            <button onclick="viewReviewHistory()" class="action-button">View Review History</button>
+            <button onclick="exportReview()" class="action-button">Export as Text</button>
+
+            <div id="review-saved" class="result-box">
+                <h4>✓ Review Saved</h4>
+                <p>Your weekly review has been saved to browser storage. Continue this practice to track patterns across weeks and months.</p>
+            </div>
+
+            <div id="review-history" class="result-box" style="max-height: 400px; overflow-y: auto;">
+                <h4>Review History</h4>
+                <div id="history-content"></div>
+            </div>
+        </div>
+
+        <!-- CAPABILITY INVENTORY SECTION -->
+        <div id="capability-inventory" class="content-section">
+            <h2>Personal Capability Inventory</h2>
+            <p>Map your current capabilities across ABCD dimensions to understand what you have, what you need, and what you can contribute to networks.</p>
+
+            <h3>Agency Capabilities</h3>
+            <div class="input-group">
+                <label>What can I do well? (Specific skills, knowledge, practices)</label>
+                <textarea id="inv-agency-have" placeholder="List concrete capabilities you've developed..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What Agency capabilities do my current challenges require?</label>
+                <textarea id="inv-agency-need" placeholder="What would help you act more effectively?"></textarea>
+            </div>
+
+            <h3>Beauty/Awe Infrastructure</h3>
+            <div class="input-group">
+                <label>What practices currently sustain my motivation?</label>
+                <textarea id="inv-beauty-practices" placeholder="Daily, weekly, monthly practices..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What sources of awe are accessible to me?</label>
+                <textarea id="inv-beauty-sources" placeholder="Nature, art, music, intellectual challenge, moral sublimity, etc."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Where is my motivational infrastructure weak?</label>
+                <textarea id="inv-beauty-weak" placeholder="What's missing? What needs strengthening?"></textarea>
+</div><h3>Context-Reading Capabilities</h3>
+        <div class="input-group">
+            <label>How well do I understand my situation? (Rate 1-10)</label>
+            <input type="range" min="1" max="10" value="5" id="inv-context-rating" oninput="updateRatingDisplay('context', this.value)">
+            <span id="context-rating-display">5</span>/10
+        </div>
+
+        <div class="input-group">
+            <label>Which context-reading capabilities do I have?</label>
+            <textarea id="inv-context-have" placeholder="Multi-level analysis, material analysis, power awareness, systems thinking..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Which context-reading capabilities do I need to develop?</label>
+            <textarea id="inv-context-need" placeholder="What would help you understand your situation better?"></textarea>
+        </div>
+
+        <h3>Dynamics-Navigation Capabilities</h3>
+        <div class="input-group">
+            <label>How well do I handle change? (Rate 1-10)</label>
+            <input type="range" min="1" max="10" value="5" id="inv-dynamics-rating" oninput="updateRatingDisplay('dynamics', this.value)">
+            <span id="dynamics-rating-display">5</span>/10
+        </div>
+
+        <div class="input-group">
+            <label>What dynamics-navigation capabilities do I have?</label>
+            <textarea id="inv-dynamics-have" placeholder="Pattern recognition, feedback loop awareness, experimental adaptation..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>What dynamics-navigation capabilities do I need?</label>
+            <textarea id="inv-dynamics-need" placeholder="What would help you navigate change better?"></textarea>
+        </div>
+
+        <h3>Capability Development Plan</h3>
+        <div class="input-group">
+            <label>Choose ONE capability to develop this month:</label>
+            <select id="inv-focus-capability">
+                <option value="">Select a capability...</option>
+                <option value="systematic-doubt">Systematic Self-Examination (Cartesian Doubt)</option>
+                <option value="empirical-observation">Systematic Observation (Bacon)</option>
+                <option value="control-discrimination">Control Discrimination (Stoics)</option>
+                <option value="meditation">Meditative Observation (Indian Tradition)</option>
+                <option value="role-practice">Role-Based Practice (Confucius)</option>
+                <option value="socratic-questioning">Systematic Questioning (Socrates)</option>
+                <option value="material-analysis">Material/Economic Analysis (Marx)</option>
+                <option value="authentic-commitment">Authentic Commitment (Kierkegaard)</option>
+                <option value="pragmatic-experiment">Pragmatic Experimentation (Dewey)</option>
+                <option value="phenomenological-attention">Phenomenological Attention (Husserl)</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Daily practice plan (5-10 minutes):</label>
+            <textarea id="inv-daily-plan" placeholder="What specific practice will you do daily?"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Weekly practice plan (30-60 minutes):</label>
+            <textarea id="inv-weekly-plan" placeholder="What deeper practice will you do weekly?"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>How will you measure improvement?</label>
+            <textarea id="inv-measurement" placeholder="Concrete indicators of development..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>30-day target:</label>
+            <textarea id="inv-target" placeholder="What specific improvement do you aim for in 30 days?"></textarea>
+        </div>
+
+        <button onclick="saveCapabilityInventory()">Save Capability Inventory</button>
+        <button onclick="generateCapabilityReport()" class="action-button">Generate Report</button>
+
+        <div id="capability-saved" class="result-box">
+            <h4>✓ Capability Inventory Saved</h4>
+            <p>Your capability inventory has been saved. Review and update monthly to track development.</p>
+        </div>
+
+        <div id="capability-report" class="result-box"></div>
+    </div>
+
+    <!-- CASE STUDIES SECTION -->
+    <div id="case-studies" class="content-section">
+        <h2>Historical Case Studies: Capability Networks in Action</h2>
+        <p>Learn from real-world examples of capability-based coordination transforming oppressive systems.</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="showCaseTab('mandela-tab')">Mandela & Anti-Apartheid</button>
+            <button class="tab" onclick="showCaseTab('maathai-tab')">Maathai & Green Belt</button>
+            <button class="tab" onclick="showCaseTab('patterns-tab')">Replicable Patterns</button>
+        </div>
+
+        <div id="mandela-tab" class="tab-content active">
+            <div class="case-study">
+                <div class="case-study-header">
+                    <h3>Nelson Mandela and the Anti-Apartheid Movement</h3>
+                    <p><strong>Challenge:</strong> Dismantling institutionalized white supremacy in South Africa</p>
+                    <p><strong>Timeline:</strong> 1960-1994 (33 years)</p>
+                    <p><strong>Outcome:</strong> Democratic transition without civil war</p>
+                </div>
+
+                <h4>Capability Network Structure</h4>
+                <div class="network-viz">
+                    <div class="network-node" onclick="showNodeDetail('mandela')">
+                        <strong>Mandela</strong><br>
+                        Moral Authority<br>
+                        Strategic Vision
+                    </div>
+                    <div class="network-node" onclick="showNodeDetail('tambo')">
+                        <strong>Oliver Tambo</strong><br>
+                        International Relations
+                    </div>
+                    <div class="network-node" onclick="showNodeDetail('tutu')">
+                        <strong>Desmond Tutu</strong><br>
+                        Religious Authority
+                    </div>
+                    <div class="network-node" onclick="showNodeDetail('unions')">
+                        <strong>Trade Unions</strong><br>
+                        Mass Mobilization
+                    </div>
+                    <div class="network-node" onclick="showNodeDetail('lawyers')">
+                        <strong>Legal Team</strong><br>
+                        Constitutional Expertise
+                    </div>
+                    <div class="network-node" onclick="showNodeDetail('mk')">
+                        <strong>MK (Armed Wing)</strong><br>
+                        Security Capability
+                    </div>
+                </div>
+
+                <div id="node-detail" class="result-box"></div>
+
+                <h4>Phase Development</h4>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <h5>1960s-1970s: Building Under Suppression</h5>
+                        <p><strong>Capabilities Developed:</strong></p>
+                        <ul>
+                            <li>Legal resistance (defending political prisoners)</li>
+                            <li>International solidarity networks</li>
+                            <li>Underground organizing</li>
+                            <li>Armed struggle capability (threat more than execution)</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>1980s: Mass Mobilization</h5>
+                        <p><strong>Capabilities Developed:</strong></p>
+                        <ul>
+                            <li>Township organizing (making areas "ungovernable")</li>
+                            <li>International sanctions (economic pressure)</li>
+                            <li>Cultural resistance (music, theater, funerals)</li>
+                            <li>Union strength (COSATU)</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>1990-1994: Negotiation</h5>
+                        <p><strong>Capabilities Deployed:</strong></p>
+                        <ul>
+                            <li>Constitutional negotiation</li>
+                            <li>Violence management (preventing civil war)</li>
+                            <li>Mass expectation management</li>
+                            <li>Building democratic institutions</li>
+                        </ul>
+                    </div>
+
+                    <div class="timeline-item">
+                        <h5>Post-1994: Institution Building</h5>
+                        <p><strong>Capabilities Deployed:</strong></p>
+                        <ul>
+                            <li>Reconciliation processes (Truth & Reconciliation Commission)</li>
+                            <li>Constitutional Court establishment</li>
+                            <li>Democratic governance</li>
+                            <li>Social cohesion building</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h4>Key Lessons</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Network Structure:</strong> Mandela was hub, not controller. System survived his imprisonment.</li>
+                    <li><strong>Compatible Capabilities:</strong> Religious leaders, Marxists, liberals, nationalists coordinated despite different values.</li>
+                    <li><strong>Multiple Scales:</strong> Grassroots organizing + elite negotiation simultaneously.</li>
+                    <li><strong>Moral Authority Through Sacrifice:</strong> 27 years imprisonment gave Mandela unique credibility.</li>
+                    <li><strong>Patient Capability Building:</strong> 33 years from armed struggle to democratic election.</li>
+                    <li><strong>Creation + Opposition:</strong> Built alternative institutions while resisting apartheid.</li>
+                </ul>
+
+                <div class="quote-box">
+                    "One person doesn't transform systems alone—but one person can be crucial network hub coordinating diverse capabilities."
+                </div>
+            </div>
+        </div>
+
+        <div id="maathai-tab" class="tab-content">
+            <div class="case-study">
+                <div class="case-study-header">
+                    <h3>Wangari Maathai and the Green Belt Movement</h3>
+                    <p><strong>Challenge:</strong> Environmental degradation, women's oppression, poverty, authoritarianism in Kenya</p>
+                    <p><strong>Timeline:</strong> 1977-2011 (34 years)</p>
+                    <p><strong>Outcome:</strong> 51 million trees planted, democratic transition, Nobel Peace Prize</p>
+                </div>
+
+                <h4>Interconnected System Addressed</h4>
+                <div class="network-viz">
+                    <div class="network-node">
+                        <strong>Environmental</strong><br>
+                        Deforestation<br>
+                        Soil Erosion
+                    </div>
+                    <div class="network-node">
+                        <strong>Economic</strong><br>
+                        Rural Poverty<br>
+                        Women's Labor
+                    </div>
+                    <div class="network-node">
+                        <strong>Social</strong><br>
+                        Women's<br>
+                        Empowerment
+                    </div>
+                    <div class="network-node">
+                        <strong>Political</strong><br>
+                        Authoritarian<br>
+                        State
+                    </div>
+                    <div class="network-node">
+                        <strong>Cultural</strong><br>
+                        Consciousness<br>
+                        Raising
+                    </div>
+                </div>
+
+                <h4>How Tree-Planting Developed Multiple Capabilities</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Environmental:</strong> Reduced erosion, provided firewood, restored water sources</li>
+                    <li><strong>Economic:</strong> Income from tree nurseries, improved agriculture</li>
+                    <li><strong>Social:</strong> Women's organizing, community building, collective action</li>
+                    <li><strong>Political:</strong> Civic participation, challenging authority, democratic practice</li>
+                    <li><strong>Educational:</strong> Systems thinking, political consciousness, ecological understanding</li>
+                </ul>
+
+                <div class="tip-box">
+                    <strong>Key Insight:</strong> One practice (tree-planting) developed capabilities across all ABCD dimensions simultaneously. This is efficient capability development.
+                </div>
+
+                <h4>Capability Network</h4>
+                <p><strong>Maathai's Unique Contributions:</strong></p>
+                <ul>
+                    <li>Scientific understanding (PhD in biology)</li>
+                    <li>Vision articulation (connecting environment-poverty-democracy)</li>
+                    <li>Moral authority (personal courage, beatings, imprisonment)</li>
+                    <li>International communication</li>
+                </ul>
+
+                <p><strong>What She Learned From Network:</strong></p>
+                <ul>
+                    <li>Indigenous ecological knowledge (from rural women)</li>
+                    <li>Mass organizing (from grassroots groups)</li>
+                    <li>International funding (from NGO partners)</li>
+                    <li>Legal resistance (from activist lawyers)</li>
+                </ul>
+
+                <h4>Coordination Across Difference</h4>
+                <p><strong>Different Motivations for Joining:</strong></p>
+                <ul style="line-height: 2;">
+                    <li>Traditional values: "Ancestors demand we care for land"</li>
+                    <li>Christian stewardship: "God made me steward of creation"</li>
+                    <li>Feminist empowerment: "Women need economic independence"</li>
+                    <li>Scientific conservation: "Ecological restoration prevents desertification"</li>
+                    <li>Political opposition: "Environmental work enables democratic resistance"</li>
+                </ul>
+
+                <p><strong>Compatible Capability:</strong> All could plant trees, organize nurseries, participate in seminars, resist destructive projects—despite different ultimate values.</p>
+
+                <h4>Key Lessons</h4>
+                <ul style="line-height: 2;">
+                    <li><strong>Interconnected Problems:</strong> Environment, poverty, oppression reinforce each other—address simultaneously.</li>
+                    <li><strong>Simple Practice, Deep Impact:</strong> Tree-planting accessible to anyone but develops multiple capabilities.</li>
+                    <li><strong>Network Effects:</strong> Environmental capability → economic → social → political → deeper environmental.</li>
+                    <li><strong>Replicable Model:</strong> Local groups adapted to contexts, spread beyond Kenya.</li>
+                    <li><strong>Decades-Long Patience:</strong> First trees planted 1977, Nobel Prize 2004, systemic impact by 2000s.</li>
+                </ul>
+
+                <div class="quote-box">
+                    "Single practice can develop multiple capabilities simultaneously if designed to address interconnected system."
+                </div>
+            </div>
+        </div>
+
+        <div id="patterns-tab" class="tab-content">
+            <h3>Replicable Patterns from Both Cases</h3>
+
+            <h4>Pattern 1: Hub-and-Network Structure</h4>
+            <p><strong>Both operated as network hubs not command centers:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Connected diverse groups without controlling them</li>
+                <li>Maintained vision and relationships, not control</li>
+                <li>Enabled distributed leadership</li>
+                <li>Network survived damage to any node including hub</li>
+            </ul>
+
+            <h4>Pattern 2: Multiple Entry Points</h4>
+            <p><strong>Welcomed diverse motivations and values:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Religious, secular, political, economic reasons all valid</li>
+                <li>Coordination through compatible capabilities not shared beliefs</li>
+                <li>Broad coalition reaching multiple demographics</li>
+                <li>Resilient—if one motivation weakens, others sustain</li>
+            </ul>
+
+            <h4>Pattern 3: Concrete Practices Building Abstract Capabilities</h4>
+            <p><strong>Started with simple, accessible practices:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Anyone can participate regardless of education</li>
+                <li>Results visible and motivating</li>
+                <li>Skills transferable to others</li>
+                <li>Practices develop multiple capabilities simultaneously</li>
+            </ul>
+
+            <h4>Pattern 4: Simultaneous Top-Down and Bottom-Up</h4>
+            <p><strong>Integrated elite engagement and grassroots organizing:</strong></p>
+            <ul style="line-height: 2;">
+                <li>International relationships + local organizing</li>
+                <li>Policy advocacy + community action</li>
+                <li>Mass pressure enabled elite negotiation</li>
+                <li>Elite resources enabled grassroots expansion</li>
+            </ul>
+
+            <h4>Pattern 5: Creation Alongside Opposition</h4>
+            <p><strong>Built alternatives while resisting:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Planted trees while opposing deforestation</li>
+                <li>Built democratic practices while resisting apartheid</li>
+                <li>Created immediate benefits during long struggle</li>
+                <li>Demonstrated competence for post-transformation</li>
+            </ul>
+
+            <h4>Pattern 6: International Visibility for Protection</h4>
+            <p><strong>Used global attention strategically:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Made domestic repression costly</li>
+                <li>Provided resources and legitimacy</li>
+                <li>Constrained regime behavior</li>
+                <li>Amplified local impact globally</li>
+            </ul>
+
+            <h4>Pattern 7: Decades-Long Patient Building</h4>
+            <p><strong>Systemic transformation takes time:</strong></p>
+            <ul style="line-height: 2;">
+                <li>Mandela: 33 years from armed struggle to democracy</li>
+                <li>Maathai: 34 years from first trees to Nobel Prize</li>
+                <li>But continuous progress visible throughout</li>
+                <li>Early wins sustain commitment for long haul</li>
+            </ul>
+
+            <div class="tip-box">
+                <strong>For Contemporary Challenges:</strong> Climate, AI alignment, pandemic prevention, democratic resilience—all require similar patient, networked, multi-capability approaches. Learn from these historical examples.
+            </div>
+
+            <h3>Application Exercise</h3>
+            <div class="input-group">
+                <label>Which contemporary challenge concerns you most?</label>
+                <select id="case-challenge">
+                    <option value="">Select a challenge...</option>
+                    <option value="climate">Climate Change</option>
+                    <option value="ai">AI Alignment</option>
+                    <option value="pandemic">Pandemic Prevention</option>
+                    <option value="democracy">Democratic Erosion</option>
+                    <option value="inequality">Economic Inequality</option>
+                    <option value="meaning">Meaning Crisis</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>What capabilities does this challenge require?</label>
+                <textarea id="case-capabilities" placeholder="List specific capabilities needed..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Which capabilities do you currently have?</label>
+                <textarea id="case-have" placeholder="What can you contribute?"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>Who in your network has complementary capabilities?</label>
+                <textarea id="case-network" placeholder="Map potential collaborators..."></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>What concrete practice could build multiple capabilities simultaneously?</label>
+                <textarea id="case-practice" placeholder="Design a practice like tree-planting—simple, accessible, multi-dimensional..."></textarea>
+            </div>
+
+            <button onclick="saveCaseAnalysis()">Save Analysis</button>
+            <button onclick="generateActionPlan()" class="action-button">Generate Action Plan</button>
+
+            <div id="case-saved" class="result-box">
+                <h4>✓ Analysis Saved</h4>
+                <p>Your case analysis has been saved. Use this to develop your contribution strategy.</p>
+            </div>
+
+            <div id="action-plan" class="result-box"></div>
+        </div>
+    </div>
+
+    <!-- NETWORK BUILDER SECTION -->
+    <div id="network-builder" class="content-section">
+        <h2>Capability Network Builder</h2>
+        <p>Map your network of people with complementary capabilities to identify coordination opportunities and capability gaps.</p>
+
+        <div class="tip-box">
+            <strong>Remember:</strong> You don't need all capabilities yourself. You need to coordinate with people who have complementary capabilities.
+        </div>
+
+        <h3>Add Network Members</h3>
+        <div class="input-group">
+            <label>Name:</label>
+            <input type="text" id="network-name" placeholder="Person or organization name">
+        </div>
+
+        <div class="input-group">
+            <label>Primary Capabilities:</label>
+            <textarea id="network-capabilities" placeholder="What can they do well?"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Motivation/Values:</label>
+            <textarea id="network-motivation" placeholder="What drives them? (May differ from your values)"></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Connection Strength:</label>
+            <select id="network-connection">
+                <option value="strong">Strong - Close relationship, frequent contact</option>
+                <option value="moderate">Moderate - Established relationship, occasional contact</option>
+                <option value="weak">Weak - Acquaintance, rare contact</option>
+                <option value="potential">Potential - No current relationship but could connect</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label>Collaboration Potential:</label>
+            <select id="network-potential">
+                <option value="high">High - Ready to collaborate now</option>
+                <option value="medium">Medium - Might collaborate with outreach</option>
+                <option value="low">Low - Unlikely to collaborate currently</option>
+                <option value="unknown">Unknown - Need to explore</option>
+            </select>
+        </div>
+
+        <button onclick="addNetworkMember()">Add to Network Map</button>
+
+        <h3>Your Network Map</h3>
+        <div id="network-map" class="result-box" style="display: block;">
+            <p style="color: #666;">No network members added yet. Start mapping your capability network above.</p>
+        </div>
+
+        <h3>Network Analysis</h3>
+        <button onclick="analyzeNetwork()" class="action-button">Analyze My Network</button>
+        
+        <div id="network-analysis" class="result-box"></div>
+
+        <h3>Identify Coordination Opportunities</h3>
+        <div class="input-group">
+            <label>What challenge could benefit from network coordination?</label>
+            <textarea id="network-challenge" placeholder="Specific problem or project..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>Which network members have relevant capabilities?</label>
+            <textarea id="network-relevant" placeholder="List members and their contributions..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>What coordination approach would work despite different values?</label>
+            <textarea id="network-approach" placeholder="How can you coordinate through compatible capabilities?"></textarea>
+        </div>
+
+        <button onclick="saveCoordinationPlan()">Save Coordination Plan</button>
+
+        <div id="coordination-saved" class="result-box">
+            <h4>✓ Coordination Plan Saved</h4>
+            <p>Review and update as you build relationships and capabilities.</p>
+        </div>
+    </div>
+
+    <!-- RESOURCES SECTION -->
+    <div id="resources" class="content-section">
+        <h2>Resources and Further Learning</h2>
+
+        <h3>Core Concepts Quick Reference</h3>
+        
+        <div class="abcd-grid">
+            <div class="abcd-card">
+                <h3>ABCD Framework</h3>
+                <ul style="text-align: left;">
+                    <li><strong>A</strong>gency: What you can do</li>
+                    <li><strong>B</strong>eauty/Awe: What sustains motivation</li>
+                    <li><strong>C</strong>ontext: Your situation</li>
+                    <li><strong>D</strong>ynamics: How things change</li>
+                </ul>
+            </div>
+
+            <div class="abcd-card">
+                <h3>ATCF</h3>
+                <p><strong>Assembly Theory Coherence Function</strong></p>
+                <p>Measures whether you maintain identity coherence while developing new capabilities.</p>
+            </div>
+
+            <div class="abcd-card">
+                <h3>Capability-Based Coordination</h3>
+                <p>Coordinating through compatible capabilities despite incompatible ultimate values.</p>
+            </div>
+
+            <div class="abcd-card">
+                <h3>Meta-Constructor Capacity</h3>
+                <p>Using capabilities to develop capabilities—the recursive process of systematic self-improvement.</p>
+            </div>
+        </div>
+
+        <h3>Practice Schedules</h3>
+
+        <h4>Daily Practices (5-15 minutes)</h4>
+        <ul class="checklist">
+            <li onclick="toggleCheck(this)">Morning awe practice (observe sky, nature, beauty)</li>
+            <li onclick="toggleCheck(this)">One inherited capability (meditation, questioning, observation)</li>
+            <li onclick="toggleCheck(this)">ABCD quick check: What am I doing today and why?</li>
+            <li onclick="toggleCheck(this)">Evening gratitude for awe moments</li>
+        </ul>
+
+        <h4>Weekly Practices (30-60 minutes)</h4>
+        <ul class="checklist">
+            <li onclick="toggleCheck(this)">ABCD Weekly Review (Sunday evening)</li>
+            <li onclick="toggleCheck(this)">Deeper awe practice (nature, art, intellectual depth)</li>
+            <li onclick="toggleCheck(this)">Capability development focused practice</li>
+            <li onclick="toggleCheck(this)">Network relationship building</li>
+        </ul>
+
+        <h4>Monthly Practices (2-4 hours)</h4>
+        <ul class="checklist">
+            <li onclick="toggleCheck(this)">Review 4 weeks of notes for patterns</li>
+            <li onclick="toggleCheck(this)">ATCF check: Am I maintaining coherence?</li>
+            <li onclick="toggleCheck(this)">Capability network assessment</li>
+            <li onclick="toggleCheck(this)">Awe pilgrimage (sustained contemplation)</li>
+            <li onclick="toggleCheck(this)">Update capability inventory</li>
+        </ul>
+
+        <h3>Philosophical Capabilities to Practice</h3>
+
+        <h4>From Ancient Traditions:</h4>
+        <ul style="line-height: 2;">
+            <li><strong>Meditation</strong> (Indian): 10 min daily observing consciousness</li>
+            <li><strong>Systematic Questioning</strong> (Socrates): One belief examined weekly</li>
+            <li><strong>Role Practice</strong> (Confucius): One role performed skillfully daily</li>
+            <li><strong>Pattern Recognition</strong> (Daoism): Noticing natural flows and timing</li>
+        </ul>
+
+        <h4>From Modern Period:</h4>
+        <ul style="line-height: 2;">
+            <li><strong>Cartesian Doubt</strong>: Question one assumption daily</li>
+            <li><strong>Empirical Checking</strong> (Bacon): Test one belief against evidence weekly</li>
+            <li><strong>Control Discrimination</strong> (Stoics): Daily distinguish controllable from uncontrollable</li>
+        </ul>
+
+        <h4>From 19th Century:</h4>
+        <ul style="line-height: 2;">
+            <li><strong>Historical Consciousness</strong> (Hegel): Monthly reflect on historical situatedness</li>
+            <li><strong>Material Analysis</strong> (Marx): Weekly examine how systems constrain possibilities</li>
+            <li><strong>Authentic Commitment</strong> (Kierkegaard): Weekly check—performing or genuinely choosing?</li>
+            <li><strong>Value Examination</strong> (Nietzsche): Monthly question one inherited value</li>
+        </ul>
+
+        <h4>From 20th Century:</h4>
+        <ul style="line-height: 2;">
+            <li><strong>Pragmatic Experimentation</strong>: Act, observe consequences, adjust</li>
+            <li><strong>Phenomenological Attention</strong>: Weekly describe experience before interpreting</li>
+            <li><strong>Systems Thinking</strong>: Monthly map one problem's interconnections</li>
+        </ul>
+
+        <h3>Export Your Data</h3>
+        <button onclick="exportAllData()" class="action-button">Export All Saved Data</button>
+        <button onclick="clearAllData()" style="background: #dc3545;">Clear All Data</button>
+
+        <div class="warning-box">
+            <strong>Privacy Note:</strong> All data is stored locally in your browser. Nothing is sent to any server. Export your data regularly to back it up.
+        </div>
+
+        <h3>About This Application</h3>
+        <p>This interactive web application is designed to help you practice the examined life through systematic capability development using the ABCD framework (Agency, Beauty/Awe, Context, Dynamics).</p>
+        
+        <p><strong>Based on:</strong> 2,500 years of accumulated philosophical wisdom integrated into contemporary capability ethics and coordination theory.</p>
+
+        <p><strong>Key Sources:</strong></p>
+        <ul>
+            <li>Ancient philosophical traditions (Indian, Chinese, Greek)</li>
+            <li>Medieval synthesis and institutional innovation</li>
+            <li>Modern philosophers (Descartes through Kant)</li>
+            <li>19th century (Hegel, Marx, Kierkegaard, Nietzsche, Utilitarians)</li>
+            <li>20th century (Pragmatism, Existentialism, Analytic, Phenomenology)</li>
+            <li>Contemporary capability theory and systems thinking</li>
+            <li>Historical case studies (Mandela, Maathai)</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    // Global state
+    let networkMembers = [];
+    
+    // Load saved data on startup
+    window.onload = function() {
+        loadNetworkData();
+    };
+
+    // Section Navigation
+    function showSection(sectionId) {
+        const sections = document.querySelectorAll('.content-section');
+        sections.forEach(section => section.classList.remove('active'));
+        
+        document.getElementById(sectionId).classList.add('active');
+        
+        const navButtons = document.querySelectorAll('.nav-btn');
+        navButtons.forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        
+        window.scrollTo(0, 0);
+    }
+
+    // Tab Navigation
+    function showTab(tabId) {
+        const currentSection = document.querySelector('.content-section.active');
+        const tabContents = currentSection.querySelectorAll('.tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));document.getElementById(tabId).classList.add('active');
+        
+        const tabs = currentSection.querySelectorAll('.tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    // Case Study Tabs
+    function showCaseTab(tabId) {
+        const tabContents = document.querySelectorAll('#case-studies .tab-content');
+        tabContents.forEach(content => content.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        
+        const tabs = document.querySelectorAll('#case-studies .tab');
+        tabs.forEach(tab => tab.classList.remove('active'));
+        event.target.classList.add('active');
+    }
+
+    // Checklist Toggle
+    function toggleCheck(element) {
+        element.classList.toggle('checked');
+    }
+
+    // Rating Display Update
+    function updateRatingDisplay(type, value) {
+        document.getElementById(type + '-rating-display').textContent = value;
+    }
+
+    // Weekly Review Functions
+    function saveWeeklyReview() {
+        const reviewData = {
+            date: document.getElementById('review-date').value,
+            agency: {
+                accomplished: document.getElementById('agency-accomplished').value,
+                calibration: document.getElementById('agency-calibration').value,
+                constraints: document.getElementById('agency-constraints').value,
+                needed: document.getElementById('agency-needed').value
+            },
+            beauty: {
+                experiences: document.getElementById('awe-experiences').value,
+                motivation: document.getElementById('awe-motivation').value,
+                practice: document.getElementById('awe-practice').value
+            },
+            context: {
+                systems: document.getElementById('context-systems').value,
+                constructed: document.getElementById('context-constructed').value,
+                power: document.getElementById('context-power').value,
+                connections: document.getElementById('context-connections').value
+            },
+            dynamics: {
+                patterns: document.getElementById('dynamics-patterns').value,
+                feedback: document.getElementById('dynamics-feedback').value,
+                tipping: document.getElementById('dynamics-tipping').value,
+                tempo: document.getElementById('dynamics-tempo').value
             }
+        };
 
-            stepItems.forEach(item => {
-                item.addEventListener('click', () => {
-                    const step = item.id.split('-')[1];
-                    updateStepView(step);
-                });
-            });
-            updateStepView('1');
+        let reviews = JSON.parse(localStorage.getItem('weeklyReviews') || '[]');
+        reviews.push(reviewData);
+        localStorage.setItem('weeklyReviews', JSON.stringify(reviews));
+
+        const resultBox = document.getElementById('review-saved');
+        resultBox.classList.add('visible');
+        setTimeout(() => resultBox.classList.remove('visible'), 3000);
+
+        document.querySelectorAll('#weekly-review input, #weekly-review textarea').forEach(input => {
+            if (input.type !== 'date') input.value = '';
         });
-    </script>
-</body>
-</html>
+    }
 
+    function viewReviewHistory() {
+        const reviews = JSON.parse(localStorage.getItem('weeklyReviews') || '[]');
+        const historyBox = document.getElementById('review-history');
+        const historyContent = document.getElementById('history-content');
+
+        if (reviews.length === 0) {
+            historyContent.innerHTML = '<p>No reviews saved yet. Complete your first weekly review!</p>';
+        } else {
+            let html = '<h5>Past Reviews (' + reviews.length + ' total)</h5>';
+            reviews.reverse().slice(0, 5).forEach((review, index) => {
+                html += `
+                    <div style="border-left: 3px solid #667eea; padding-left: 15px; margin: 15px 0;">
+                        <h6>Week of ${review.date || 'Not dated'}</h6>
+                        <p><strong>Agency Accomplishments:</strong> ${review.agency.accomplished.substring(0, 100)}${review.agency.accomplished.length > 100 ? '...' : ''}</p>
+                        <p><strong>Awe Experiences:</strong> ${review.beauty.experiences.substring(0, 100)}${review.beauty.experiences.length > 100 ? '...' : ''}</p>
+                    </div>
+                `;
+            });
+            if (reviews.length > 5) {
+                html += '<p><em>Showing 5 most recent. Total saved: ' + reviews.length + '</em></p>';
+            }
+            historyContent.innerHTML = html;
+        }
+
+        historyBox.classList.add('visible');
+    }
+
+    function exportReview() {
+        const reviewData = {
+            date: document.getElementById('review-date').value,
+            agency: {
+                accomplished: document.getElementById('agency-accomplished').value,
+                calibration: document.getElementById('agency-calibration').value,
+                constraints: document.getElementById('agency-constraints').value,
+                needed: document.getElementById('agency-needed').value
+            },
+            beauty: {
+                experiences: document.getElementById('awe-experiences').value,
+                motivation: document.getElementById('awe-motivation').value,
+                practice: document.getElementById('awe-practice').value
+            },
+            context: {
+                systems: document.getElementById('context-systems').value,
+                constructed: document.getElementById('context-constructed').value,
+                power: document.getElementById('context-power').value,
+                connections: document.getElementById('context-connections').value
+            },
+            dynamics: {
+                patterns: document.getElementById('dynamics-patterns').value,
+                feedback: document.getElementById('dynamics-feedback').value,
+                tipping: document.getElementById('dynamics-tipping').value,
+                tempo: document.getElementById('dynamics-tempo').value
+            }
+        };
+
+        const text = `WEEKLY ABCD REVIEWDate: ${reviewData.date || 'Not specified'}
+=== AGENCY ASSESSMENT ===
+Accomplished:
+${reviewData.agency.accomplished}
+Calibration:
+${reviewData.agency.calibration}
+Constraints:
+${reviewData.agency.constraints}
+Needed Capabilities:
+${reviewData.agency.needed}
+=== BEAUTY/AWE INFRASTRUCTURE ===
+Experiences:
+${reviewData.beauty.experiences}
+Motivation:
+${reviewData.beauty.motivation}
+Practice Plan:
+${reviewData.beauty.practice}
+=== CONTEXT ANALYSIS ===
+Systems:
+${reviewData.context.systems}
+Constructed as Natural:
+${reviewData.context.constructed}
+Hidden Power:
+${reviewData.context.power}
+Interconnections:
+${reviewData.context.connections}
+=== DYNAMICS NAVIGATION ===
+Patterns:
+${reviewData.dynamics.patterns}
+Feedback Loops:
+${reviewData.dynamics.feedback}
+Tipping Points:
+${reviewData.dynamics.tipping}
+Tempo:
+${reviewData.dynamics.tempo}`;const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'weekly-review-' + (reviewData.date || Date.now()) + '.txt';
+        a.click();
+    }
+
+    // Capability Inventory Functions
+    function saveCapabilityInventory() {
+        const inventory = {
+            timestamp: new Date().toISOString(),
+            agency: {
+                have: document.getElementById('inv-agency-have').value,
+                need: document.getElementById('inv-agency-need').value
+            },
+            beauty: {
+                practices: document.getElementById('inv-beauty-practices').value,
+                sources: document.getElementById('inv-beauty-sources').value,
+                weak: document.getElementById('inv-beauty-weak').value
+            },
+            context: {
+                rating: document.getElementById('inv-context-rating').value,
+                have: document.getElementById('inv-context-have').value,
+                need: document.getElementById('inv-context-need').value
+            },
+            dynamics: {
+                rating: document.getElementById('inv-dynamics-rating').value,
+                have: document.getElementById('inv-dynamics-have').value,
+                need: document.getElementById('inv-dynamics-need').value
+            },
+            developmentPlan: {
+                capability: document.getElementById('inv-focus-capability').value,
+                dailyPlan: document.getElementById('inv-daily-plan').value,
+                weeklyPlan: document.getElementById('inv-weekly-plan').value,
+                measurement: document.getElementById('inv-measurement').value,
+                target: document.getElementById('inv-target').value
+            }
+        };
+
+        localStorage.setItem('capabilityInventory', JSON.stringify(inventory));
+
+        const resultBox = document.getElementById('capability-saved');
+        resultBox.classList.add('visible');
+        setTimeout(() => resultBox.classList.remove('visible'), 3000);
+    }
+
+    function generateCapabilityReport() {
+        const inventory = JSON.parse(localStorage.getItem('capabilityInventory') || '{}');
+        
+        if (!inventory.timestamp) {
+            alert('Please save your capability inventory first!');
+            return;
+        }
+
+        const reportBox = document.getElementById('capability-report');
+        
+        let html = `
+            <h4>📊 Capability Analysis Report</h4>
+            <p><strong>Date:</strong> ${new Date(inventory.timestamp).toLocaleDateString()}</p>
+            
+            <h5>Overall Assessment:</h5>
+            <div class="progress-tracker">
+                <div><strong>Context Reading:</strong> ${inventory.context.rating || 5}/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(inventory.context.rating || 5) * 10}%">${(inventory.context.rating || 5) * 10}%</div>
+                </div>
+            </div>
+            
+            <div class="progress-tracker">
+                <div><strong>Dynamics Navigation:</strong> ${inventory.dynamics.rating || 5}/10</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${(inventory.dynamics.rating || 5) * 10}%">${(inventory.dynamics.rating || 5) * 10}%</div>
+                </div>
+            </div>
+            
+            <h5>Key Strengths:</h5>
+            <ul>
+                ${inventory.agency.have ? '<li>' + inventory.agency.have.split('\n')[0] + '</li>' : ''}
+                ${inventory.context.have ? '<li>' + inventory.context.have.split('\n')[0] + '</li>' : ''}
+                ${inventory.dynamics.have ? '<li>' + inventory.dynamics.have.split('\n')[0] + '</li>' : ''}
+            </ul>
+            
+            <h5>Priority Development Areas:</h5>
+            <ul>
+                ${inventory.agency.need ? '<li><strong>Agency:</strong> ' + inventory.agency.need.split('\n')[0] + '</li>' : ''}
+                ${inventory.context.need ? '<li><strong>Context:</strong> ' + inventory.context.need.split('\n')[0] + '</li>' : ''}
+                ${inventory.dynamics.need ? '<li><strong>Dynamics:</strong> ' + inventory.dynamics.need.split('\n')[0] + '</li>' : ''}
+            </ul>
+            
+            ${inventory.developmentPlan.capability ? `
+            <h5>Current Focus:</h5>
+            <p><strong>Developing:</strong> ${document.querySelector('#inv-focus-capability option[value="' + inventory.developmentPlan.capability + '"]').textContent}</p>
+            <p><strong>30-Day Target:</strong> ${inventory.developmentPlan.target}</p>
+            ` : ''}
+            
+            <h5>Awe Infrastructure Status:</h5>
+            ${inventory.beauty.weak ? 
+                '<div class="warning-box"><strong>Attention Needed:</strong> ' + inventory.beauty.weak + '</div>' : 
+                '<div class="tip-box">Continue maintaining current practices</div>'
+            }
+        `;
+        
+        reportBox.innerHTML = html;
+        reportBox.classList.add('visible');
+    }
+
+    // Case Study Functions
+    function showNodeDetail(node) {
+        const details = {
+            'mandela': {
+                name: 'Nelson Mandela',
+                role: 'Network Hub & Strategic Visionary',
+                capabilities: [
+                    'Symbolic/moral authority from 27 years imprisonment',
+                    'Strategic vision seeing negotiation as viable path',
+                    'Negotiation across difference',
+                    'Communication to multiple audiences',
+                    'Personal reconciliation capability'
+                ],
+                contribution: 'Connected diverse parts of movement, maintained long-term vision, enabled negotiation through unquestionable moral credentials'
+            },
+            'tambo': {
+                name: 'Oliver Tambo',
+                role: 'International Relations',
+                capabilities: [
+                    'Building relationships with foreign governments',
+                    'International advocacy and solidarity',
+                    'Movement coordination from exile',
+                    'Strategic patience and long-term planning'
+                ],
+                contribution: 'Built global support network, organized international sanctions, maintained ANC presence globally'
+            },
+            'tutu': {
+                name: 'Desmond Tutu',
+                role: 'Moral Authority & Reconciliation',
+                capabilities: [
+                    'Religious moral authority',
+                    'International advocacy from religious platform',
+                    'Truth-telling and reconciliation leadership',
+                    'Bridge-building across racial divide'
+                ],
+                contribution: 'Provided moral framework beyond opposition, led Truth & Reconciliation Commission, international voice'
+            },
+            'unions': {
+                name: 'Trade Unions (COSATU)',
+                role: 'Mass Mobilization',
+                capabilities: [
+                    'Organizing workers across industries',
+                    'Strikes and economic pressure',
+                    'Political education',
+                    'Sustained grassroots mobilization'
+                ],
+                contribution: 'Made townships ungovernable, provided mass base for movement, disciplined organizing'
+            },
+            'lawyers': {
+                name: 'Legal Team',
+                role: 'Constitutional Expertise',
+                capabilities: [
+                    'Defending political prisoners',
+                    'Challenging apartheid laws',
+                    'Constitutional negotiation',
+                    'Building legal framework for democracy'
+                ],
+                contribution: 'Kept resistance visible through legal system, created constitutional foundation, negotiated legal framework'
+            },
+            'mk': {
+                name: 'MK (Umkhonto we Sizwe)',
+                role: 'Armed Wing',
+                capabilities: [
+                    'Military training and operations',
+                    'Security and intelligence',
+                    'Credible threat of armed resistance',
+                    'Disciplined organizational structure'
+                ],
+                contribution: 'Made regime recognize cost of continued oppression, provided negotiating leverage, maintained discipline'
+            }
+        };
+
+        const detail = details[node];
+        const detailBox = document.getElementById('node-detail');
+        
+        detailBox.innerHTML = `
+            <h4>${detail.name}</h4>
+            <p><strong>Role:</strong> ${detail.role}</p>
+            <p><strong>Key Capabilities:</strong></p>
+            <ul>
+                ${detail.capabilities.map(cap => '<li>' + cap + '</li>').join('')}
+            </ul>
+            <p><strong>Contribution to Network:</strong></p>
+            <p>${detail.contribution}</p>
+        `;
+        
+        detailBox.classList.add('visible');
+    }
+
+    function saveCaseAnalysis() {
+        const analysis = {
+            timestamp: new Date().toISOString(),
+            challenge: document.getElementById('case-challenge').value,
+            capabilities: document.getElementById('case-capabilities').value,
+            have: document.getElementById('case-have').value,
+            network: document.getElementById('case-network').value,
+            practice: document.getElementById('case-practice').value
+        };
+
+        localStorage.setItem('caseAnalysis', JSON.stringify(analysis));
+
+        const resultBox = document.getElementById('case-saved');
+        resultBox.classList.add('visible');
+        setTimeout(() => resultBox.classList.remove('visible'), 3000);
+    }
+
+    function generateActionPlan() {
+        const analysis = JSON.parse(localStorage.getItem('caseAnalysis') || '{}');
+        
+        if (!analysis.challenge) {
+            alert('Please save your case analysis first!');
+            return;
+        }
+
+        const actionBox = document.getElementById('action-plan');
+        
+        const challengeName = document.querySelector('#case-challenge option[value="' + analysis.challenge + '"]').textContent;
+        
+        let html = `
+            <h4>🎯 Action Plan: ${challengeName}</h4>
+            
+            <h5>Phase 1: Capability Assessment (This Week)</h5>
+            <ol>
+                <li>Complete detailed capability inventory for this challenge</li>
+                <li>Map who in your network has complementary capabilities</li>
+                <li>Identify 3-5 people to reach out to for coordination</li>
+            </ol>
+            
+            <h5>Phase 2: Network Building (This Month)</h5>
+            <ol>
+                <li>Schedule conversations with identified network members</li>
+                <li>Explore shared interests despite different values</li>
+                <li>Design one concrete practice you can do together</li>
+                <li>Start small: One collaborative project or practice</li>
+            </ol>
+            
+            <h5>Phase 3: Practice Design (Months 2-3)</h5>
+            <ol>
+                <li>Implement the practice you designed</li>
+                <li>Track what capabilities it develops</li>
+                <li>Refine based on results</li>
+                <li>Document for replication</li>
+            </ol>
+            
+            <h5>Based on Historical Patterns:</h5>
+            <div class="tip-box">
+                <strong>Like Mandela & Maathai:</strong>
+                <ul>
+                    <li>Build network structure, not hierarchy</li>
+                    <li>Welcome multiple entry points and motivations</li>
+                    <li>Start with simple, concrete practices</li>
+                    <li>Coordinate through compatible capabilities</li>
+                    <li>Plan for decades but show progress continuously</li>
+                </ul>
+            </div>
+            
+            <h5>Your Specific Context:</h5>
+            ${analysis.practice ? '<p><strong>Proposed Practice:</strong> ' + analysis.practice + '</p>' : ''}
+            ${analysis.network ? '<p><strong>Network Resources:</strong> ' + analysis.network + '</p>' : ''}
+            
+            <h5>Next Steps:</h5>
+            <ol>
+                <li>Choose ONE person to reach out to this week</li>
+                <li>Design ONE experiment to try in next 30 days</li>
+                <li>Block time for weekly practice</li>
+                <li>Set up monthly review to track progress</li>
+            </ol>
+        `;
+        
+        actionBox.innerHTML = html;
+        actionBox.classList.add('visible');
+    }
+
+    // Network Builder Functions
+    function addNetworkMember() {
+        const member = {
+            id: Date.now(),
+            name: document.getElementById('network-name').value,
+            capabilities: document.getElementById('network-capabilities').value,
+            motivation: document.getElementById('network-motivation').value,
+            connection: document.getElementById('network-connection').value,
+            potential: document.getElementById('network-potential').value
+        };
+
+        if (!member.name || !member.capabilities) {
+            alert('Please provide at least name and capabilities!');
+            return;
+        }
+
+        networkMembers.push(member);
+        saveNetworkData();
+        displayNetworkMap();
+
+        document.getElementById('network-name').value = '';
+        document.getElementById('network-capabilities').value = '';
+        document.getElementById('network-motivation').value = '';
+        document.getElementById('network-connection').selectedIndex = 0;
+        document.getElementById('network-potential').selectedIndex = 0;
+    }
+
+    function displayNetworkMap() {
+        const mapBox = document.getElementById('network-map');
+        
+        if (networkMembers.length === 0) {
+            mapBox.innerHTML = '<p style="color: #666;">No network members added yet. Start mapping your capability network above.</p>';
+            return;
+        }
+
+        let html = '<h5>Network Members (' + networkMembers.length + ')</h5>';
+        
+        networkMembers.forEach(member => {
+            const connectionColor = {
+                'strong': '#28a745',
+                'moderate': '#ffc107',
+                'weak': '#6c757d',
+                'potential': '#17a2b8'
+            }[member.connection];
+
+            html += `
+                <div style="border-left: 4px solid ${connectionColor}; padding: 15px; margin: 10px 0; background: white; border-radius: 4px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div style="flex: 1;">
+                            <h6 style="margin: 0 0 10px 0; color: #667eea;">${member.name}</h6>
+                            <p style="margin: 5px 0;"><strong>Capabilities:</strong> ${member.capabilities}</p>
+                            <p style="margin: 5px 0;"><strong>Motivation:</strong> ${member.motivation}</p>
+                            <p style="margin: 5px 0;"><small>Connection: <span style="color: ${connectionColor}">${member.connection}</span> | Potential: ${member.potential}</small></p>
+                        </div>
+                        <button onclick="removeNetworkMember(${member.id})" style="background: #dc3545; padding: 5px 10px; font-size: 0.9em;">Remove</button>
+                    </div>
+                </div>
+            `;
+        });
+
+        mapBox.innerHTML = html;
+    }
+
+    function removeNetworkMember(id) {
+        networkMembers = networkMembers.filter(m => m.id !== id);
+        saveNetworkData();
+        displayNetworkMap();
+    }
+
+    function analyzeNetwork() {
+        if (networkMembers.length === 0) {
+            alert('Add some network members first!');
+            return;
+        }
+
+        const analysisBox = document.getElementById('network-analysis');
+        
+        const strongConnections = networkMembers.filter(m => m.connection === 'strong').length;
+        const moderateConnections = networkMembers.filter(m => m.connection === 'moderate').length;
+        const weakConnections = networkMembers.filter(m => m.connection === 'weak').length;
+        const potentialConnections = networkMembers.filter(m => m.connection === 'potential').length;
+
+        const highPotential = networkMembers.filter(m => m.potential === 'high').length;
+        const mediumPotential = networkMembers.filter(m => m.potential === 'medium').length;
+
+        let html = `
+            <h4>📊 Network Analysis</h4>
+            
+            <h5>Network Size: ${networkMembers.length} members</h5>
+            
+            <h5>Connection Distribution:</h5>
+            <ul>
+                <li><span style="color: #28a745">●</span> Strong: ${strongConnections}</li>
+                <li><span style="color: #ffc107">●</span> Moderate: ${moderateConnections}</li>
+                <li><span style="color: #6c757d">●</span> Weak: ${weakConnections}</li>
+                <li><span style="color: #17a2b8">●</span> Potential: ${potentialConnections}</li>
+            </ul>
+            
+            <h5>Collaboration Readiness:</h5>
+            <ul>
+                <li>High potential: ${highPotential} members</li>
+                <li>Medium potential: ${mediumPotential} members</li>
+            </ul>
+            
+            <h5>Network Health Assessment:</h5>
+        `;
+
+        if (strongConnections < 2) {
+            html += '<div class="warning-box">⚠️ Limited strong connections. Focus on deepening relationships with 2-3 key people.</div>';
+        } else {
+            html += '<div class="tip-box">✓ Good foundation of strong connections for coordination.</div>';
+        }
+
+        if (potentialConnections > networkMembers.length * 0.5) {
+            html += '<div class="tip-box">💡 Many potential connections. Prioritize reaching out to 2-3 this month.</div>';
+        }
+
+        if (highPotential >= 3) {
+            html += '<div class="tip-box">✓ Multiple high-potential collaborators. Consider initiating a coordination project.</div>';
+        }
+
+        html += `
+            <h5>Next Steps:</h5>
+            <ol>
+                <li>Strengthen ${Math.min(2, weakConnections + potentialConnections)} weak/potential connections</li>
+                <li>Initiate one collaboration with high-potential members</li>
+                <li>Map complementary capabilities across network</li>
+                <li>Design one concrete coordination practice</li>
+            </ol>
+        `;
+
+        analysisBox.innerHTML = html;
+        analysisBox.classList.add('visible');
+    }
+
+    function saveCoordinationPlan() {
+        const plan = {
+            timestamp: new Date().toISOString(),
+            challenge: document.getElementById('network-challenge').value,
+            relevant: document.getElementById('network-relevant').value,
+            approach: document.getElementById('network-approach').value
+        };
+
+        localStorage.setItem('coordinationPlan', JSON.stringify(plan));
+
+        const resultBox = document.getElementById('coordination-saved');
+        resultBox.classList.add('visible');
+        setTimeout(() => resultBox.classList.remove('visible'), 3000);
+    }
+
+    function saveNetworkData() {
+        localStorage.setItem('networkMembers', JSON.stringify(networkMembers));
+    }
+
+    function loadNetworkData() {
+        const saved = localStorage.getItem('networkMembers');
+        if (saved) {
+            networkMembers = JSON.parse(saved);
+            if (document.getElementById('network-map')) {
+                displayNetworkMap();
+            }
+        }
+    }
+
+    // Data Export Functions
+    function exportAllData() {
+        const allData = {
+            exportDate: new Date().toISOString(),
+            weeklyReviews: JSON.parse(localStorage.getItem('weeklyReviews') || '[]'),
+            capabilityInventory: JSON.parse(localStorage.getItem('capabilityInventory') || '{}'),
+            caseAnalysis: JSON.parse(localStorage.getItem('caseAnalysis') || '{}'),
+            coordinationPlan: JSON.parse(localStorage.getItem('coordinationPlan') || '{}'),
+            networkMembers: JSON.parse(localStorage.getItem('networkMembers') || '[]')
+        };
+
+        const blob = new Blob([JSON.stringify(allData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'examined-life-data-' + new Date().toISOString().split('T')[0] + '.json';
+        a.click();
+
+        alert('All data exported! Save this file to back up your progress.');
+    }
+
+    function clearAllData() {
+        if (confirm('Are you sure? This will delete ALL your saved data. Export first if you want to keep it!')) {
+            if (confirm('Really delete everything? This cannot be undone.')) {
+                localStorage.clear();
+                networkMembers = [];
+                alert('All data cleared. Refresh the page to start fresh.');
+                location.reload();
+            }
+        }
+    }
+</script></body>
+</html>
+```
