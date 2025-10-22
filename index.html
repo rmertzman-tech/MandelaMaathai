@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Architecture of Ethical Reasoning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+    Chosen Palette: Professional Indigo & Slate
+    Application Structure Plan: A thematic SPA divided into five core sections that mirror the essay's logical flow but are presented for interactive exploration. 1) Introduction with a "Gaming Discovery" hook. 2) A section detailing the Personal Reality Framework (PRF). 3) A deep dive into the "Three Universal Coordination Principles." 4) An interactive "Ethical Logic Toolkit" where users can explore ATL, STIT, and Coalition Logic. 5) A capstone "Ethical Cartography" simulation where users apply the entire framework to the AI Ethics case study. This structure guides the user from the foundational discovery to practical application, making the framework a usable tool rather than just a theoretical text.
+    Visualization & Content Choices: Report Info: Gaming Discovery Data -> Goal: Show evidence -> Viz: Bar Chart -> Interaction: Hover to see data points. -> Justification: The bar chart makes the performance advantages of diverse teams immediately apparent and impactful. -> Library: Chart.js. Report Info: PRF Components -> Goal: Explain -> Viz: Clickable cards -> Interaction: Click reveals details of each component (B, R, O, A+, C) and the UEV. Report Info: ATCF Components -> Goal: Explain measurement -> Viz: Doughnut Chart -> Interaction: Hover for component descriptions -> Justification: A doughnut chart is a good way to show a whole composed of parts (the ATCF score). -> Library: Chart.js. Report Info: Logical Tools -> Goal: Explain -> Viz: Tabbed interface for ATL, STIT, Coalition Logic -> Interaction: User clicks tabs to switch between explanations of the logical tools. Report Info: AI Ethics Case Study -> Goal: Simulate -> Viz: Step-by-step interactive workflow -> Interaction: User clicks through the 6 steps of the Ethical Cartography process, seeing how each tool is applied to generate a robust solution. This makes the abstract process concrete and actionable.
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+            color: #334155; /* slate-700 */
+        }
+        .section-title {
+            color: #4338ca; /* indigo-700 */
+        }
+        .interactive-card {
+            transition: all 0.3s ease-in-out;
+            border: 1px solid #cbd5e1; /* slate-300 */
+        }
+        .interactive-card:hover, .interactive-card.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #4f46e5; /* indigo-600 */
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+        }
+        .tab-btn.active {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .step-item.active .step-circle {
+            background-color: #4f46e5;
+            color: white;
+            border-color: #4f46e5;
+        }
+         .step-item.active .step-title {
+            color: #4338ca;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-700">
+
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-700">Ethical Architecture</h1>
+            <div class="hidden md:flex space-x-6 text-sm">
+                <a href="#foundation" class="text-slate-600 hover:text-indigo-600 transition">Foundation</a>
+                <a href="#principles" class="text-slate-600 hover:text-indigo-600 transition">Principles</a>
+                <a href="#language" class="text-slate-600 hover:text-indigo-600 transition">Language</a>
+                <a href="#toolkit" class="text-slate-600 hover:text-indigo-600 transition">Toolkit</a>
+                <a href="#cartography" class="text-slate-600 hover:text-indigo-600 transition">Cartography</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="intro" class="text-center mb-24">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4">The Architecture of Ethical Reasoning</h2>
+            <p class="max-w-3xl mx-auto text-lg text-slate-600">
+                This is a unified framework for applied ethics, moving from abstract theory to a practical science of coordination. It provides worldview-agnostic tools to navigate complex moral decisions and design effective ethical systems.
+            </p>
+        </section>
+
+        <section id="foundation" class="mb-24 pt-8">
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part I: The Foundation</h3>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
+                A key discovery from over 4,000 international gaming sessions grounds this framework: culturally diverse teams consistently outperform homogeneous ones when they focus on coordination capabilities rather than shared beliefs.
+            </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h4 class="text-xl font-bold text-center mb-4">Performance Advantage of Diverse Teams</h4>
+                <div class="chart-container">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+            <div class="mt-12">
+                 <h4 class="text-2xl font-bold text-center mb-6">Your Ethical Mind as Living Architecture: The PRF</h4>
+                 <div class="grid md:grid-cols-3 gap-6">
+                    <div class="col-span-3 md:col-span-1 space-y-4">
+                         <div id="prf-card-b" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>B:</strong> Belief System</div>
+                         <div id="prf-card-r" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>R:</strong> Rule System</div>
+                         <div id="prf-card-o" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>O:</strong> Ontological System</div>
+                         <div id="prf-card-a" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>A+:</strong> Authenticity System</div>
+                         <div id="prf-card-c" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>C:</strong> Coordination Capabilities</div>
+                         <div id="prf-card-uev" class="interactive-card bg-white p-4 rounded-lg cursor-pointer"><strong>UEV:</strong> Unified Experience Vector</div>
+                    </div>
+                    <div id="prf-detail-view" class="md:col-span-2 bg-white p-6 rounded-xl shadow-lg">
+                        <h5 id="prf-detail-title" class="font-bold text-xl mb-2 text-indigo-700">Click a component to learn more</h5>
+                        <p id="prf-detail-text" class="text-slate-600">Your moral reasoning operates through an integrated, measurable system. This Personal Reality Framework (PRF) is the living architecture of your ethical mind.</p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="principles" class="mb-24 pt-8">
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">The Three Universal Coordination Principles</h3>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
+                Cross-cultural research reveals that all effective ethical coordination, regardless of the specific moral tradition, relies on three organizational principles.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-4">1</div>
+                    <h4 class="font-bold text-xl mb-2">Capability-Based Connection</h4>
+                    <p class="text-slate-600">Coordination emerges from recognizing others' ethical capabilities, not from demanding shared beliefs. A utilitarian and a deontologist can work together by respecting each other's analytical strengths.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-4">2</div>
+                    <h4 class="font-bold text-xl mb-2">Temporal Coherence</h4>
+                    <p class="text-slate-600">Ethical decisions must integrate past wisdom, present reality, and future consequences. This ability to maintain coherence across time is a measurable predictor of ethical capability.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-lg shadow-lg text-center">
+                    <div class="text-4xl mb-4">3</div>
+                    <h4 class="font-bold text-xl mb-2">Cross-Scale Organization</h4>
+                    <p class="text-slate-600">The same architectural principles that enable individual moral agency also enable effective family, institutional, and societal ethics. Ethical systems are fractal.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="language" class="mb-24 pt-8">
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part II: The Language of Capability</h3>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
+                This framework revolutionizes how we understand ethical statements. Instead of asking what a statement like "We should help the poor" *means* as a universal truth, we ask what *capabilities* an agent needs to work with it effectively.
+            </p>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                <h4 class="text-xl font-bold text-center">Capability Specification for: "We Should Help the Poor"</h4>
+                <p class="text-center text-sm text-slate-500 mb-8">Effective use of this statement requires four distinct capabilities:</p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                    <div>
+                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">R</div>
+                        <h5 class="font-semibold mt-4">Recognition</h5>
+                        <p class="text-sm text-slate-500">Ability to identify poverty's impacts.</p>
+                    </div>
+                    <div>
+                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">R</div>
+                        <h5 class="font-semibold mt-4">Response</h5>
+                        <p class="text-sm text-slate-500">Procedural knowledge for anti-poverty actions.</p>
+                    </div>
+                    <div>
+                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">C</div>
+                        <h5 class="font-semibold mt-4">Coordination</h5>
+                        <p class="text-sm text-slate-500">Skills to work with others on complementary actions.</p>
+                    </div>
+                    <div>
+                        <div class="mx-auto bg-indigo-100 text-indigo-700 w-16 h-16 rounded-full flex items-center justify-center text-2xl font-bold">A</div>
+                        <h5 class="font-semibold mt-4">Assessment</h5>
+                        <p class="text-sm text-slate-500">Meta-capacity to evaluate and improve strategies.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit" class="mb-24 pt-8">
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part III: The Measurement Toolkit</h3>
+             <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
+                This framework integrates formal logic as a practical toolkit for ethical reasoning. Explore the different tools and their applications below.
+            </p>
+            <div class="bg-white rounded-xl shadow-lg">
+                <div class="flex border-b border-slate-200">
+                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition active" data-tab="atl">ATL</button>
+                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="stit">STIT</button>
+                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="coalition">Coalition Logic</button>
+                    <button class="tab-btn flex-1 p-4 font-semibold text-slate-500 transition" data-tab="atcf">ATCF</button>
+                </div>
+                <div class="p-8">
+                    <div id="tab-content-atl" class="tab-content">
+                        <h4 class="text-xl font-bold">Alternating-Time Temporal Logic (ATL)</h4>
+                        <p class="text-sm text-slate-500 mb-4">For Strategic Ethical Analysis</p>
+                        <p>ATL shifts the question from "Is this action right?" to "Do we have a strategy to ensure an ethical outcome?" It transforms abstract moral debate into practical analysis of capabilities and coordination.</p>
+                        <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> "Does our society have coalition strategies to guarantee universal healthcare access, regardless of political opposition or economic shifts?"</p>
+                    </div>
+                    <div id="tab-content-stit" class="tab-content hidden">
+                        <h4 class="text-xl font-bold">"Seeing To It That" Logic (STIT)</h4>
+                        <p class="text-sm text-slate-500 mb-4">For Personal Moral Agency</p>
+                        <p>STIT formalizes individual responsibility. It distinguishes between hoping for an outcome and having the actual capability to ethically ensure it happens. This prevents making commitments based on good intentions alone.</p>
+                         <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> It helps differentiate "I hope I'll be a good parent" (a wish) from "I have the skills and resources to ensure my child receives needed care" (a commitment based on capability).</p>
+                    </div>
+                    <div id="tab-content-coalition" class="tab-content hidden">
+                        <h4 class="text-xl font-bold">Coalition Logic</h4>
+                         <p class="text-sm text-slate-500 mb-4">For Distributed Ethical Responsibility</p>
+                        <p>This tool is for problems no single person can solve. It models how groups can coordinate their capabilities to achieve ethical outcomes that are beyond any individual's power.</p>
+                        <p class="mt-2 text-sm bg-slate-50 p-3 rounded-lg"><strong>Example:</strong> "What combination of roles (HR, leadership, staff) and capabilities is needed to eliminate hiring bias, and how must they coordinate to succeed?"</p>
+                    </div>
+                    <div id="tab-content-atcf" class="tab-content hidden grid md:grid-cols-2 gap-6 items-center">
+                        <div>
+                            <h4 class="text-xl font-bold">Adaptive Temporal Coherence Function (ATCF)</h4>
+                            <p class="text-sm text-slate-500 mb-4">For Mathematical Ethics Across Time</p>
+                            <p>The ATCF is a measurable assessment of an agent's ability to maintain a coherent ethical identity over time. High scores predict superior ethical decision-making. It has four key components.</p>
+                        </div>
+                        <div class="chart-container" style="height: 250px;">
+                             <canvas id="atcfChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="cartography" class="pt-8">
+            <h3 class="text-3xl font-bold text-center mb-2 section-title">Part IV: Applied Integration - Ethical Cartography</h3>
+            <p class="text-center max-w-2xl mx-auto mb-12 text-slate-600">
+                Ethical Cartography is the unified process in action. It's about mapping a moral territory and designing navigation routes, not just arguing about destinations. Let's apply it to the challenge of developing AI Ethics Guidelines.
+            </p>
+            <div class="bg-white rounded-xl shadow-lg p-8">
+                 <div class="flex flex-col md:flex-row gap-8">
+                    <div class="w-full md:w-1/3 space-y-2">
+                        <div id="step-1" class="step-item interactive-card p-3 rounded-lg cursor-pointer active">
+                            <h5 class="step-title font-semibold">1. Cross-Scale Analysis</h5>
+                        </div>
+                        <div id="step-2" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
+                            <h5 class="step-title font-semibold">2. PRF Proposition Development</h5>
+                        </div>
+                        <div id="step-3" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
+                             <h5 class="step-title font-semibold">3. Strategic Analysis (ATL)</h5>
+                        </div>
+                        <div id="step-4" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
+                             <h5 class="step-title font-semibold">4. Agency Assessment (STIT)</h5>
+                        </div>
+                         <div id="step-5" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
+                             <h5 class="step-title font-semibold">5. Temporal Check (ATCF)</h5>
+                        </div>
+                         <div id="step-6" class="step-item interactive-card p-3 rounded-lg cursor-pointer">
+                             <h5 class="step-title font-semibold">6. Game-Theoretic Validation</h5>
+                        </div>
+                    </div>
+                    <div class="w-full md:w-2/3 bg-slate-50 p-6 rounded-lg">
+                        <h4 id="step-detail-title" class="font-bold text-xl mb-2 text-indigo-700"></h4>
+                        <p id="step-detail-text" class="text-slate-600"></p>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+    </main>
+    <footer class="text-center py-8 text-sm text-slate-500">
+        <p>The Architecture of Ethical Reasoning: A Unified Framework. FAIM-QIRF.</p>
+        <a href="https://rmertzman-tech.github.io/capability-coordination-framework/index.html" class="hover:text-indigo-600 underline" target="_blank">Technical Repository</a>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scroll for nav links
+            document.querySelectorAll('header nav a').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+
+            // Performance Chart
+            const perfCtx = document.getElementById('performanceChart').getContext('2d');
+            new Chart(perfCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Complex Dilemmas', 'Adaptation', 'Innovation', 'Stakeholder Satisfaction'],
+                    datasets: [{
+                        label: '% Superior Performance of Diverse Teams',
+                        data: [23, 40, 35, 52],
+                        backgroundColor: 'rgba(79, 70, 229, 0.6)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    scales: { y: { beginAtZero: true, max: 60, ticks: { callback: value => value + '%' } } },
+                    plugins: { legend: { display: false } }
+                }
+            });
+
+            // PRF Details
+            const prfDetails = {
+                b: { title: 'Belief System (B)', text: "Your probability assessments and confidence levels about moral propositions, with measurable neural correlates in prefrontal regions." },
+                r: { title: 'Rule System (R)', text: "Your procedural knowledge for navigating ethical situations, with weighted decision procedures that activate based on context." },
+                o: { title: 'Ontological System (O)', text: "Your fundamental categories for understanding moral reality—concepts of personhood, responsibility, harm, and justice." },
+                a: { title: 'Authenticity System (A+)', text: "Your standards for evaluating alignment with your core identity, including your Identity Kernel (IK), the invariant structures of your ethical self." },
+                c: { title: 'Coordination Capabilities (C)', text: "Your empirically assessed skills for working with others on ethical challenges, including perspective-taking and conflict resolution." },
+                uev: { title: 'Unified Experience Vector (UEV)', text: "The simultaneous, measurable integration of your Global Feeling Tone, Emotional Motivation Vector, Rational Deliberation Vector, and Action Readiness Vector." }
+            };
+
+            const prfDetailTitle = document.getElementById('prf-detail-title');
+            const prfDetailText = document.getElementById('prf-detail-text');
+            document.querySelectorAll('.interactive-card[id^="prf-card-"]').forEach(card => {
+                card.addEventListener('click', () => {
+                    document.querySelectorAll('.interactive-card[id^="prf-card-"]').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    const key = card.id.split('-')[2];
+                    prfDetailTitle.innerText = prfDetails[key].title;
+                    prfDetailText.innerText = prfDetails[key].text;
+                });
+            });
+
+            // Logic Toolkit Tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tab = btn.dataset.tab;
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    tabContents.forEach(content => {
+                        if (content.id === `tab-content-${tab}`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            
+            // ATCF Chart
+            const atcfCtx = document.getElementById('atcfChart').getContext('2d');
+            new Chart(atcfCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Historical Continuity (HC)', 'Present Integration (PI)', 'Prospective Coherence (PC)', 'Meta-Constructor Capacity (MCC)'],
+                    datasets: [{
+                        label: 'ATCF Components',
+                        data: [25, 25, 25, 25],
+                        backgroundColor: ['rgba(79, 70, 229, 0.7)', 'rgba(30, 64, 175, 0.7)', 'rgba(129, 140, 248, 0.7)', 'rgba(199, 210, 254, 0.7)'],
+                        borderColor: '#f1f5f9',
+                        borderWidth: 2
+                    }]
+                },
+                options: { maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+            });
+
+            // Cartography Steps
+            const stepDetails = {
+                '1': { title: '1. Cross-Scale Analysis', text: 'Map the coordination requirements across all levels, from individual developers to international bodies. Identify how actions at one scale impact others.' },
+                '2': { title: '2. PRF Proposition Development', text: 'Instead of abstract principles like "AI should be fair," define the specific capabilities development teams must have in their Belief, Rule, and other PRF systems to detect and mitigate bias.' },
+                '3': { title: '3. Strategic Analysis (ATL)', text: 'Use Alternating-Time Temporal Logic to ask: "Does humanity have coalition strategies to ensure ethical AI development, even with conflicting interests and external pressures?" This moves from hope to strategy.' },
+                '4': { title: '4. Agency Assessment (STIT)', text: 'Use STIT logic to identify which specific agents (e.g., a lead engineer, a safety board) have the actual power to "see to it that" an ethical constraint is implemented, clarifying responsibility.' },
+                '5': { title: '5. Temporal Coherence Check (ATCF)', text: 'Assess whether the proposed guidelines will enhance or fragment the long-term ethical coherence of the stakeholders. Will these rules support authentic development or force inauthentic compliance?' },
+                '6': { title: '6. Game-Theoretic Validation', text: 'Test the proposed guidelines in a simulated "game" against serious challenges (e.g., market competition, national security concerns) to ensure they form a "winning strategy" for ethical AI.' }
+            };
+
+            const stepItems = document.querySelectorAll('.step-item');
+            const stepDetailTitle = document.getElementById('step-detail-title');
+            const stepDetailText = document.getElementById('step-detail-text');
+
+            function updateStepView(step) {
+                 stepItems.forEach(item => item.classList.remove('active'));
+                 document.getElementById(`step-${step}`).classList.add('active');
+                 stepDetailTitle.innerText = stepDetails[step].title;
+                 stepDetailText.innerText = stepDetails[step].text;
+            }
+
+            stepItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const step = item.id.split('-')[1];
+                    updateStepView(step);
+                });
+            });
+            updateStepView('1');
+        });
+    </script>
+</body>
+</html>
+
